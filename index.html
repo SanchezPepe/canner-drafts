@@ -1,22 +1,55 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vue.js 3 , Tailwind CSS and Flowbite</title>
+    <!-- Import Vue.js 3 -->
+    <script src="https://unpkg.com/vue@next"></script>
+    <!-- Import Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script type="module">
-      import { createApp } from "https://unpkg.com/vue@3/dist/vue.esm-browser.js";
-
-      createApp({
-        data() {
-          return {
-            message: "Hello Vue!",
-          };
-        },
-      }).mount("#app");
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+      };
     </script>
+    <!-- Import Flowbite CSS -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css"
+      rel="stylesheet"
+    />
   </head>
-  <body id="app">
-    {{ message }}
+  <body :class="{ 'dark': darkMode }">
+    <div id="app">
+      <div class="min-h-screen bg-white dark:bg-gray-800">
+        <h1 class="text-4xl text-gray-900 dark:text-white py-4">
+          Hello from Vue.js and Tailwind CSS with Dark Mode
+        </h1>
+        <button
+          @click="toggleDarkMode"
+          class="py-2 px-4 bg-blue-900 text-white rounded"
+        >
+          Toggle Dark Mode
+        </button>
+      </div>
+    </div>
+
+    <!-- Addtional scripts -->
+    <script>
+      const app = Vue.createApp({
+        data: () => ({
+          darkMode: false,
+        }),
+        methods: {
+          toggleDarkMode() {
+            document.documentElement.classList.toggle("dark");
+            console.log("Dark mode toggled!");
+          },
+        },
+      });
+
+      app.mount("#app");
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
   </body>
 </html>
