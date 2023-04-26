@@ -19,7 +19,7 @@
       rel="stylesheet"
     />
   </head>
-  <body :class="{ 'dark': darkMode }" class="h-screen">
+  <body class="h-screen">
     <div id="app">
       <!-- Navbar -->
       <nav
@@ -44,8 +44,9 @@
             <ul
               class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700"
             >
+              <!-- URL input -->
               <li>
-                <form>
+                <form onsubmit="return false;">
                   <label
                     for="default-search"
                     class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
@@ -76,17 +77,19 @@
                       id="default-search"
                       class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="URL"
+                      v-model="input"
                       required
                     />
                     <button
-                      type="submit"
+                      @click="setPage"
                       class="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                     >
-                      Search
+                      Set
                     </button>
                   </div>
                 </form>
               </li>
+              <!-- Dark mode toggle -->
               <li>
                 <div class="flex items-center pl-3 pointer-events-none"></div>
                 <button
@@ -118,7 +121,7 @@
       <!-- Body -->
       <div class="grid grid-cols-2 h-screen pt-20">
         <div>Div 1</div>
-        <iframe class="h-full w-full" src="https://example.com"></iframe>
+        <iframe class="h-full w-full" :src="url"></iframe>
       </div>
     </div>
 
@@ -126,12 +129,16 @@
     <script>
       const app = Vue.createApp({
         data: () => ({
-          darkMode: false,
+          url: "https://example.com",
+          input: "",
         }),
         methods: {
           toggleDarkMode() {
             document.documentElement.classList.toggle("dark");
             console.log("Dark mode toggled!");
+          },
+          setPage() {
+            this.url = this.input;
           },
         },
       });
