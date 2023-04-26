@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vue.js 3 , Tailwind CSS and Flowbite</title>
+    <title>Canner Responses Drafts</title>
     <!-- Import Vue.js 3 -->
     <script src="https://unpkg.com/vue@next"></script>
     <!-- Import Tailwind CSS -->
@@ -19,18 +19,106 @@
       rel="stylesheet"
     />
   </head>
-  <body :class="{ 'dark': darkMode }">
+  <body :class="{ 'dark': darkMode }" class="h-screen">
     <div id="app">
-      <div class="min-h-screen bg-white dark:bg-gray-800">
-        <h1 class="text-4xl text-gray-900 dark:text-white py-4">
-          Hello from Vue.js and Tailwind CSS with Dark Mode
-        </h1>
-        <button
-          @click="toggleDarkMode"
-          class="py-2 px-4 bg-blue-900 text-white rounded"
-        >
-          Toggle Dark Mode
-        </button>
+      <!-- Navbar -->
+      <nav
+        class="absolute h-20 top-0 w-screen bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700"
+      >
+        <div class="w-screen p-3 flex flex-wrap items-center justify-between">
+          <!-- Logo -->
+          <div class="flex items-center">
+            <img
+              src="https://flowbite.com/docs/images/logo.svg"
+              class="h-8 mr-3"
+              alt="Flowbite Logo"
+            />
+            <span
+              class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white"
+              >Flowbite</span
+            >
+          </div>
+
+          <!-- Navbar links -->
+          <div class="hidden w-full md:block md:w-auto" id="navbar-multi-level">
+            <ul
+              class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700"
+            >
+              <li>
+                <form>
+                  <label
+                    for="default-search"
+                    class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+                    >Search</label
+                  >
+                  <div class="relative">
+                    <div
+                      class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
+                    >
+                      <svg
+                        class="w-5 h-5 text-gray-500 dark:text-gray-400"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.5"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                        aria-hidden="true"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418"
+                        ></path>
+                      </svg>
+                    </div>
+                    <input
+                      type="search"
+                      id="default-search"
+                      class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      placeholder="URL"
+                      required
+                    />
+                    <button
+                      type="submit"
+                      class="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                    >
+                      Search
+                    </button>
+                  </div>
+                </form>
+              </li>
+              <li>
+                <div class="flex items-center pl-3 pointer-events-none"></div>
+                <button
+                  @click="toggleDarkMode"
+                  class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                >
+                  <svg
+                    class="w-5 h-5 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z"
+                    ></path>
+                  </svg>
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Body -->
+      <div class="grid grid-cols-2 h-screen pt-20">
+        <div>Div 1</div>
+        <iframe class="h-full w-full" src="https://example.com"></iframe>
       </div>
     </div>
 
