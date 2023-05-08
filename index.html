@@ -23,28 +23,23 @@
     <div id="app">
       <!-- Navbar -->
       <nav
-        class="absolute h-20 top-0 w-screen bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700"
+        class="absolute h-20 top-0 bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700"
       >
         <div class="w-screen p-3 grid grid-cols-2">
           <!-- Logo -->
-          <div class="flex items-center">
-            <img
-              src="https://flowbite.com/docs/images/logo.svg"
-              class="h-8 mr-3"
-              alt="Flowbite Logo"
-            />
-            <span
+          <div class="flex items-center px-4">
+            <p
               class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white"
-              >Flowbite</span
             >
+              Canned Responses Drafter
+            </p>
           </div>
-
           <!-- Navbar links -->
           <ul
             class="flex items-center font-medium border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700"
           >
             <!-- URL input -->
-            <li class="grow">
+            <li class="grow mx-4">
               <form onsubmit="return false;">
                 <label
                   for="default-search"
@@ -74,14 +69,14 @@
                   <input
                     type="search"
                     id="default-search"
-                    class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    class="block w-full p-3 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="URL"
                     v-model="input"
                     required
                   />
                   <button
                     @click="setPage"
-                    class="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                    class="text-white absolute right-1.5 bottom-1.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                   >
                     Set
                   </button>
@@ -116,28 +111,113 @@
           </ul>
         </div>
       </nav>
-
-      <!-- Body -->
       <div class="grid grid-cols-2 h-screen pt-20">
-        <div>Div 1</div>
-        <iframe class="h-full w-full" :src="url"></iframe>
+        <!-- Left side -->
+        <div class="m-4">
+          <div
+            class="border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600"
+          >
+            <!-- Top -->
+            <div class="m-4">
+              <label for="header" class="text-black dark:text-white font-bold">
+                Intro
+              </label>
+              <textarea
+                v-model="header"
+                id="header"
+                rows="5"
+                class="w-full p-4 rounded-xl mt-2 text-sm text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
+                placrequired
+              ></textarea>
+            </div>
+
+            <!-- Body -->
+            <div class="m-4">
+              <label for="body" class="text-black dark:text-white font-bold">
+                Response body
+              </label>
+              <textarea
+                v-model="body"
+                id="body"
+                rows="25"
+                class="w-full p-4 rounded-xl mt-2 text-sm text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
+                placrequired
+              ></textarea>
+            </div>
+
+            <!-- Signature -->
+            <div class="m-4">
+              <label
+                for="signature"
+                class="text-black dark:text-white font-bold"
+              >
+                Signature
+              </label>
+              <textarea
+                v-model="signature"
+                id="signature"
+                rows="5"
+                class="w-full p-4 rounded-xl mt-2 text-sm text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
+                placrequired
+              ></textarea>
+            </div>
+          </div>
+
+          <!-- Buttons -->
+          <div class="grid grid-cols-2 gap-2 my-4">
+            <button
+              @click="copyToClipboard"
+              class="inline-flex items-center p-2 font-medium justify-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800"
+            >
+              Copy to clipboard
+            </button>
+            <button
+              @click="clear"
+              class="inline-flex items-center p-2 font-medium justify-center text-white bg-red-700 rounded-lg focus:ring-4 focus:ring-red-200 dark:focus:ring-red-900 hover:bg-red-800"
+            >
+              Clear all
+            </button>
+          </div>
+        </div>
+
+        <!-- Right side -->
+        <div>
+          <iframe class="h-full w-full" :src="url"></iframe>
+        </div>
       </div>
     </div>
-
     <!-- Addtional scripts -->
     <script>
       const app = Vue.createApp({
         data: () => ({
           url: "https://example.com",
+          input: "",
+          signature: "",
+          body: "",
+          header: "",
         }),
         methods: {
           toggleDarkMode() {
             document.documentElement.classList.toggle("dark");
-            console.log("Dark mode toggled!");
           },
           setPage() {
-            this.url = "https://" + this.input;
-            this.input = this.url;
+            this.url = this.input;
+          },
+          clear() {
+            this.url = "";
+            this.input = "";
+            this.signature = "";
+            this.body = "";
+            this.header = "";
+          },
+          async copyToClipboard() {
+            const text = `${this.header}\n\n${this.body}\n\n${this.signature}`;
+
+            try {
+              await navigator.clipboard.writeText(text);
+            } catch (error) {
+              console.error("Failed to copy text: ", error);
+            }
           },
         },
       });
