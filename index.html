@@ -141,7 +141,7 @@
         input: "",
         signature: "",
         body: "",
-        header: "",
+        header: "Hi team,",
       }),
       methods: {
         toggleDarkMode() {
@@ -155,7 +155,7 @@
           this.input = "";
           this.signature = "";
           this.body = "";
-          this.header = "Hi team,";
+          this.header = "";
         },
         async copyToClipboard() {
           const text = `${this.header}\n\n${this.body}\n\n${this.signature}`;
