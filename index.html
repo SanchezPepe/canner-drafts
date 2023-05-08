@@ -85,7 +85,7 @@
             <label for="header" class="text-black dark:text-white font-bold">
               Intro
             </label>
-            <textarea v-model="header" id="header" rows="5"
+            <textarea v-model="header" id="header" rows="2"
               class="w-full p-4 rounded-xl mt-2 text-sm text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
               placrequired></textarea>
           </div>
@@ -155,7 +155,7 @@
           this.input = "";
           this.signature = "";
           this.body = "";
-          this.header = "";
+          this.header = "Hi team,";
         },
         async copyToClipboard() {
           const text = `${this.header}\n\n${this.body}\n\n${this.signature}`;
