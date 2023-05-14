@@ -1,214 +1,235 @@
 <!DOCTYPE html>
 <html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Canner Responses Drafts</title>
+    <!-- Import Vue.js 3 -->
+    <script src="https://unpkg.com/vue@next"></script>
+    <!-- Import Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+      };
+    </script>
+    <!-- Import Flowbite CSS -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css"
+      rel="stylesheet"
+    />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Canner Responses Drafts</title>
-  <!-- Import Vue.js 3 -->
-  <script src="https://unpkg.com/vue@next"></script>
-  <!-- Import Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: "class",
-    };
-  </script>
-  <!-- Import Flowbite CSS -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" />
-</head>
+  <body class="h-screen bg-gray-300">
+    <div id="app">
+      <div class="grid grid-cols-2 h-screen">
+        <!-- Left panel -->
+        <div class="m-2">
+          <!-- Logo -->
+          <div
+            class="flex justify-between items-center mb-2 rounded-lg p-2 dark:bg-gray-900 dark:border-gray-700"
+          >
+            <p
+              class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white"
+            >
+              Canned Responses Drafts
+            </p>
 
-<body class="h-screen">
-  <div id="app">
-    <!-- Navbar -->
-    <nav class="absolute h-20 top-0 bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700">
-      <div class="w-screen p-3 grid grid-cols-2">
-        <!-- Logo -->
-        <div class="flex items-center px-4">
-          <p class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
-            Canned Responses Drafter
-          </p>
-        </div>
-        <!-- Navbar links -->
-        <ul
-          class="flex items-center font-medium border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
-          <!-- URL input -->
-          <li class="grow mx-4">
-            <form onsubmit="return false;">
-              <label for="default-search"
-                class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
-              <div class="relative">
-                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor"
-                    stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                      d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418">
-                    </path>
-                  </svg>
-                </div>
-                <input type="search"
-                  class="block w-full p-3 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="URL" v-model="input1" required />
-                <button @click="setPage"
-                  class="text-white absolute right-1.5 bottom-1.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                  Set
-                </button>
-              </div>
-            </form>
-          </li>
-          <!-- Dark mode toggle -->
-          <li class="p-2">
+            <!-- Dark mode toggle -->
             <div>
-              <button @click="toggleDarkMode"
-                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z">
-                  </path>
+              <button
+                @click="toggleDarkMode"
+                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              >
+                <svg
+                  class="w-5 h-5 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z"
+                  ></path>
                 </svg>
               </button>
             </div>
-          </li>
-        </ul>
-      </div>
-    </nav>
-
-    <div class="grid grid-cols-2 h-screen pt-20">
-      <!-- Left side -->
-      <div class="m-4">
-        <div class="border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
-          <!-- Top -->
-          <div class="m-4">
-            <label for="header" class="text-black dark:text-white font-bold">
-              Intro
-            </label>
-            <textarea v-model="header" id="header" rows="2"
-              class="w-full p-4 rounded-xl mt-2 text-sm text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
-              placrequired></textarea>
           </div>
 
-          <!-- Body -->
-          <div class="m-4">
-            <label for="body" class="text-black dark:text-white font-bold">
-              Response body
-            </label>
-            <textarea v-model="body" id="body" rows="25"
-              class="w-full p-4 rounded-xl mt-2 text-sm text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
-              placrequired></textarea>
+          <!-- Buttons -->
+          <div class="grid grid-cols-2 gap-2 my-2">
+            <button
+              @click="copyToClipboard"
+              class="inline-flex items-center p-2 font-medium justify-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800"
+            >
+              Copy to clipboard
+            </button>
+            <button
+              @click="clear"
+              class="inline-flex items-center p-2 font-medium justify-center text-white bg-red-800 rounded-lg focus:ring-4 focus:ring-red-200 dark:focus:ring-red-900 hover:bg-red-800"
+            >
+              Clear all
+            </button>
           </div>
 
-          <!-- Signature -->
-          <div class="m-4">
-            <label for="signature" class="text-black dark:text-white font-bold">
-              Signature
-            </label>
-            <textarea v-model="signature" id="signature" rows="5"
-              class="w-full p-4 rounded-xl mt-2 text-sm text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
-              placrequired></textarea>
-          </div>
-          
-          <!-- References -->
-          <div class="m-4">
-            <label for="references" class="text-black dark:text-white font-bold">
-              References
-            </label>
-            <textarea v-model="references" id="references" rows="5"
-              class="w-full p-4 rounded-xl mt-2 text-sm text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
-              placrequired></textarea>
+          <div
+            class="border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600"
+          >
+            <!-- Top -->
+            <div class="m-4">
+              <label for="header" class="text-black dark:text-white font-bold">
+                Intro
+              </label>
+              <textarea
+                v-model="header"
+                id="header"
+                rows="2"
+                class="w-full p-4 rounded-xl mt-2 text-sm text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
+                placrequired
+              ></textarea>
+            </div>
+
+            <!-- Body -->
+            <div class="m-4">
+              <label for="body" class="text-black dark:text-white font-bold">
+                Response body
+              </label>
+              <textarea
+                v-model="body"
+                id="body"
+                rows="25"
+                class="w-full p-4 rounded-xl mt-2 text-sm text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
+                placrequired
+              ></textarea>
+            </div>
+
+            <!-- Signature -->
+            <div class="m-4">
+              <label
+                for="signature"
+                class="text-black dark:text-white font-bold"
+              >
+                Signature
+              </label>
+              <textarea
+                v-model="signature"
+                id="signature"
+                rows="5"
+                class="w-full p-4 rounded-xl mt-2 text-sm text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
+                placrequired
+              ></textarea>
+            </div>
+
+            <!-- References -->
+            <div class="m-4">
+              <label
+                for="references"
+                class="text-black dark:text-white font-bold"
+              >
+                References
+              </label>
+              <textarea
+                v-model="references"
+                id="references"
+                rows="5"
+                class="w-full p-4 rounded-xl mt-2 text-sm text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
+                placrequired
+              ></textarea>
+            </div>
           </div>
         </div>
 
-        <!-- Buttons -->
-        <div class="grid grid-cols-2 gap-2 my-4">
-          <button @click="copyToClipboard"
-            class="inline-flex items-center p-2 font-medium justify-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800">
-            Copy to clipboard
-          </button>
-          <button @click="clear"
-            class="inline-flex items-center p-2 font-medium justify-center text-white bg-red-700 rounded-lg focus:ring-4 focus:ring-red-200 dark:focus:ring-red-900 hover:bg-red-800">
-            Clear all
-          </button>
-        </div>
-      </div>
+        <!-- Right panel -->
+        <div class="mt-2 mr-4 ml-2 grid grid-cols-1">
+          <div class="h-[92%]">
+            <div class="flex">
+              <input
+                class="w-full p-3 text-sm text-gray-900 border border-gray-300 rounded-tl-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="URL"
+                v-model="input1"
+                required
+              />
+              <button
+                @click="setPage(1)"
+                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-tr-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              >
+                Set
+              </button>
+            </div>
+            <iframe class="rounded-b-lg h-full w-full" :src="url1"></iframe>
+          </div>
 
-      <!-- Right side -->
-      <div class="grid grid-cols-1 grid-rows-2">
-        <iframe class="h-full w-full" :src="url1"></iframe>
-        
-        <div>
-            <form onsubmit="return false;">
-              <label for="default-search"
-                class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
-              <div class="relative">
-                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor"
-                    stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                      d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418">
-                    </path>
-                  </svg>
-                </div>
-                <input type="search"
-                  class="block w-full p-3 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="URL" v-model="input2" required />
-                <button @click="setPage"
-                  class="text-white absolute right-1.5 bottom-1.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                  Set
-                </button>
-              </div>
-            </form>
-          
-          <iframe class="h-full w-full" :src="url2"></iframe>
-          
+          <div class="h-[92%]">
+            <div class="flex">
+              <input
+                class="w-full p-3 text-sm text-gray-900 border border-gray-300 rounded-tl-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="URL"
+                v-model="input2"
+                required
+              />
+              <button
+                @click="setPage(2)"
+                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-tr-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              >
+                Set
+              </button>
+            </div>
+            <iframe class="rounded-b-lg h-full w-full" :src="url2"></iframe>
+          </div>
         </div>
-                        
       </div>
     </div>
-  </div>
-  <!-- Addtional scripts -->
-  <script>
-    const app = Vue.createApp({
-      data: () => ({
-        url1: "https://example.com",
-        url2: "https://example.com",
-        input1: "",
-        input2: "",
-        signature: "",
-        references: "",
-        body: "",
-        header: "Hello team,",
-      }),
-      methods: {
-        toggleDarkMode() {
-          document.documentElement.classList.toggle("dark");
-        },
-        setPage() {
-          this.url1 = this.input1;
-          this.url2 = this.input2;
-        },
-        clear() {
-          this.input = "";
-          this.signature = "";
-          this.body = "";
-          this.header = "";
-          this.references = "";
-        },
-        async copyToClipboard() {
-          const text = `${this.header}\n\n${this.body}\n\n${this.signature}\n\n${this.references}`;
+    <!-- Addtional scripts -->
+    <script>
+      const app = Vue.createApp({
+        data: () => ({
+          url1: "https://example.com",
+          url2: "https://example.com",
+          input1: "",
+          input2: "",
+          signature: "",
+          references: "",
+          body: "",
+          header: "Hello team,",
+        }),
+        methods: {
+          toggleDarkMode() {
+            document.documentElement.classList.toggle("dark");
+          },
+          setPage(page) {
+            if (page === 1) {
+              this.url1 = this.input1;
+              return;
+            } else if (page === 2) {
+              this.url2 = this.input2;
+              return;
+            }
+          },
+          clear() {
+            this.input = "";
+            this.signature = "";
+            this.body = "";
+            this.header = "";
+            this.references = "";
+          },
+          async copyToClipboard() {
+            const text = `${this.header}\n\n${this.body}\n\n${this.signature}\n\n${this.references}`;
 
-          try {
-            await navigator.clipboard.writeText(text);
-          } catch (error) {
-            console.error("Failed to copy text: ", error);
-          }
+            try {
+              await navigator.clipboard.writeText(text);
+            } catch (error) {
+              console.error("Failed to copy text: ", error);
+            }
+          },
         },
-      },
-    });
+      });
 
-    app.mount("#app");
-  </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
-</body>
-
+      app.mount("#app");
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
+  </body>
 </html>
