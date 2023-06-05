@@ -266,7 +266,7 @@ export default {
 
     function clearChat() {
       state.prompt = "";
-      state.response.text = "-";
+      state.response.message = "-";
     }
 
     function copyToClipboard() {
@@ -281,7 +281,7 @@ export default {
 
     function copyChatToClipboard() {
       try {
-        navigator.clipboard.writeText(this.response.text);
+        navigator.clipboard.writeText(this.response.message);
       } catch (error) {
         console.error("Failed to copy text: ", error);
       }
