@@ -9,6 +9,32 @@
         CR's Drafts
       </p>
 
+      <ul
+        class="bg-gray-800 border-gray-500 items-center mb-2 w-full text-sm font-medium text-white border rounded-lg sm:flex"
+      >
+        <li
+          v-for="(checkbox, index) in checkboxes"
+          :key="index"
+          :class="index !== 0 ? 'sm:border-l' : ''"
+          class="w-full border-b border-gray-500 sm:border-b-0"
+        >
+          <div class="flex items-center pl-3">
+            <input
+              id="vue-checkbox-list"
+              type="checkbox"
+              :value="checkbox.checked"
+              v-model="checkbox.checked"
+              class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+            />
+            <label
+              for="vue-checkbox-list"
+              class="w-full py-3 ml-2 text-sm text-white font-semibold"
+              >{{ checkbox.label }}
+            </label>
+          </div>
+        </li>
+      </ul>
+
       <div class="border border-gray-500 rounded-lg bg-gray-800 text-white p-4">
         <!-- Intro -->
         <TextArea
@@ -62,7 +88,10 @@
 
     <!-- Right panel -->
     <div class="grid grid-cols-1 h-full gap-2">
-      <div class="border border-gray-500 rounded-lg bg-gray-800 text-white p-4">
+      <div
+        v-if="checkboxes[2].checked"
+        class="border border-gray-500 rounded-lg bg-gray-800 text-white p-4"
+      >
         <!-- Case notes -->
         <TextArea
           @emitData="(data) => (notes = data)"
@@ -72,7 +101,7 @@
         ></TextArea>
       </div>
 
-      <div>
+      <div v-if="checkboxes[1].checked">
         <div class="flex">
           <input
             class="w-full p-3 text-sm text-white border border-gray-500 rounded-tl-lg bg-gray-900 focus:ring-blue-500 focus:border-blue-500"
@@ -97,6 +126,11 @@
 export default {
   setup() {
     const state = reactive({
+      checkboxes: [
+        { value: "chat", label: "Chat", checked: false },
+        { value: "url", label: "URL", checked: false },
+        { value: "notes", label: "Notes", checked: true },
+      ],
       url: "https://example.com",
       input: "",
       signature: "",
