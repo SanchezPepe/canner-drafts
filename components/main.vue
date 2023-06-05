@@ -217,7 +217,7 @@ export default {
       response: {
         message: "-",
       },
-      key: "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",
+      key: "sk-",
       loading: false,
       tokens: ["Prompt", "Completion", "Total"],
     });
