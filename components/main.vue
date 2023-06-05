@@ -246,6 +246,10 @@ export default {
           state.response.message =
             state.response.choices[0].message.content.replace(/\n/g, "<br />");
         })
+        .catch((error) => {
+          console.error(error);
+          alert(error.message);
+        })
         .finally(() => {
           state.loading = false;
         });
