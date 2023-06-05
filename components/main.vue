@@ -147,9 +147,8 @@
         <label for="header" class="font-bold"> Response </label>
         <p
           class="w-full mt-2 p-3 text-sm text-white border border-gray-500 rounded-lg bg-gray-900 focus:ring-blue-500 focus:border-blue-500"
-        >
-          {{ response.text }}
-        </p>
+          v-html="response.message"
+        ></p>
 
         <!-- copy to clipboard button -->
         <div class="grid grid-cols-2 gap-2 mt-2">
@@ -165,6 +164,14 @@
           >
             Clear
           </button>
+        </div>
+
+        <!-- API usage -->
+        <div class="mt-4 text-xs text-gray-400">
+          <p>API Usage:</p>
+          <ul v-for="(value, index) in response.usage">
+            <li>{{ index }} - {{ value }}</li>
+          </ul>
         </div>
       </div>
 
@@ -208,33 +215,36 @@ export default {
       header: "Hello team,",
       prompt: "",
       response: {
-        text: "-",
+        message: "-",
       },
-      key: "sk-",
+      key: "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",
       loading: false,
+      tokens: ["Prompt", "Completion", "Total"],
     });
 
     async function fetchGpt3Response() {
       state.loading = true;
-      await useFetch("https://api.openai.com/v1/completions", {
+      await useFetch("https://api.openai.com/v1/chat/completions", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${state.key}`,
         },
         body: {
-          model: "text-davinci-003",
-          prompt: state.prompt,
-          max_tokens: 160,
+          model: "gpt-3.5-turbo",
+          messages: [{ role: "user", content: state.prompt }],
+          max_tokens: 200,
         },
       })
         .then((response) => {
-          state.response = response.data._rawValue.choices[0];
+          state.response = response.data._rawValue;
           // remove line breaks
-          state.response.text = state.response.text.replace(
-            /(\r\n|\n|\r)/gm,
-            ""
-          );
+
+          console.log(state.response);
+
+          // replace line breaks with <br />
+          state.response.message =
+            state.response.choices[0].message.content.replace(/\n/g, "<br />");
         })
         .finally(() => {
           state.loading = false;
