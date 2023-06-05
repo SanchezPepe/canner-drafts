@@ -27,11 +27,6 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@main
-      - name: Download Artifact
-        uses: actions/download-artifact@main
-        with:
-          name: dist
-          path: dist
       - name: Deploy to Firebase
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
