@@ -3,6 +3,7 @@ node_modules/
 
 # Nuxt.js
 .nuxt/
+.output/
 dist/
 
 # Coverage
