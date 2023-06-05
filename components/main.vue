@@ -88,11 +88,11 @@
 
     <!-- Right panel -->
     <div class="grid grid-cols-1 h-full gap-2">
+      <!-- Case notes -->
       <div
         v-if="checkboxes[2].checked"
         class="border border-gray-500 rounded-lg bg-gray-800 text-white p-4"
       >
-        <!-- Case notes -->
         <TextArea
           @emitData="(data) => (notes = data)"
           label="Case notes"
@@ -101,6 +101,44 @@
         ></TextArea>
       </div>
 
+      <!-- Chat -->
+      <div class="border border-gray-500 rounded-lg bg-gray-800 text-white p-4">
+        <label for="header" class="font-bold"> Chat </label>
+
+        <hr class="h-px my-2 bg-gray-700 border-0" />
+
+        <label for="header" class="font-bold"> Prompt </label>
+        <div class="flex mt-2">
+          <!-- Prompt -->
+          <textarea
+            class="w-full p-3 text-sm text-white border border-gray-500 rounded-l-lg bg-gray-900 focus:ring-blue-500 focus:border-blue-500"
+            v-model="prompt"
+            required
+            :rows="2"
+          />
+
+          <!-- Submit button -->
+          <button
+            @click="fetchGpt3Response"
+            class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-r-lg text-sm px-4 py-2 dark:bg-blue-600"
+          >
+            Submit
+          </button>
+        </div>
+
+        <br />
+
+        <!-- Response -->
+        <TextArea
+          @emitData="(data) => (response = data)"
+          label="Response"
+          :rows="20"
+          :disabled="true"
+          :text="response"
+        ></TextArea>
+      </div>
+
+      <!-- Browser -->
       <div v-if="checkboxes[1].checked">
         <div class="flex">
           <input
@@ -138,7 +176,30 @@ export default {
       body: "",
       notes: "",
       header: "Hello team,",
+      prompt: "2+43243",
+      response: "",
+      key: "Bearer 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",
     });
+
+    async function fetchGpt3Response() {
+      const { post } = useFetch("/api/chat");
+
+      try {
+        const res = await post({
+          prompt: prompt.value,
+        });
+
+        console.log(",fs,", res);
+
+        if (res.ok) {
+          response.value = res.data.choices[0].text;
+        } else {
+          console.error("Error:", res.error);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
 
     function clear() {
       state.input1 = "";
@@ -163,6 +224,7 @@ export default {
       ...toRefs(state),
       copyToClipboard,
       clear,
+      fetchGpt3Response,
     };
   },
 };
