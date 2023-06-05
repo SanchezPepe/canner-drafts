@@ -69,7 +69,7 @@
         ></TextArea>
 
         <!-- Buttons -->
-        <div class="grid grid-cols-2 gap-2 m-4">
+        <div class="grid grid-cols-2 gap-2 mt-2">
           <button
             @click="copyToClipboard"
             class="inline-flex items-center p-2 font-medium justify-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 hover:bg-blue-800"
@@ -102,8 +102,23 @@
       </div>
 
       <!-- Chat -->
-      <div class="border border-gray-500 rounded-lg bg-gray-800 text-white p-4">
-        <label for="header" class="font-bold"> Chat </label>
+      <div
+        v-if="checkboxes[1].checked"
+        class="border border-gray-500 rounded-lg bg-gray-800 text-white p-4"
+      >
+        <label for="header" class="font-bold mb-2"> Chat </label>
+        <div class="flex flex-row space-x-2 items-center">
+          <input
+            type="text"
+            id="small-input"
+            v-model="key"
+            class="w-full p-2 text-xs text-white border border-gray-500 rounded-lg bg-gray-900 focus:ring-blue-500 focus:border-blue-500"
+          />
+
+          <div v-if="loading" class="flex flex-col items-center">
+            <div class="loading-spinner"></div>
+          </div>
+        </div>
 
         <hr class="h-px my-2 bg-gray-700 border-0" />
 
@@ -129,17 +144,32 @@
         <br />
 
         <!-- Response -->
-        <TextArea
-          @emitData="(data) => (response = data)"
-          label="Response"
-          :rows="20"
-          :disabled="true"
-          :text="response"
-        ></TextArea>
+        <label for="header" class="font-bold"> Response </label>
+        <p
+          class="w-full mt-2 p-3 text-sm text-white border border-gray-500 rounded-lg bg-gray-900 focus:ring-blue-500 focus:border-blue-500"
+        >
+          {{ response.text }}
+        </p>
+
+        <!-- copy to clipboard button -->
+        <div class="grid grid-cols-2 gap-2 mt-2">
+          <button
+            @click="copyChatToClipboard"
+            class="inline-flex items-center p-2 font-medium justify-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 hover:bg-blue-800"
+          >
+            Copy to clipboard
+          </button>
+          <button
+            @click="clearChat"
+            class="inline-flex items-center p-2 font-medium justify-center text-white bg-red-800 rounded-lg focus:ring-4 focus:ring-red-200 hover:bg-red-800"
+          >
+            Clear
+          </button>
+        </div>
       </div>
 
       <!-- Browser -->
-      <div v-if="checkboxes[1].checked">
+      <div v-if="checkboxes[0].checked">
         <div class="flex">
           <input
             class="w-full p-3 text-sm text-white border border-gray-500 rounded-tl-lg bg-gray-900 focus:ring-blue-500 focus:border-blue-500"
@@ -165,8 +195,8 @@ export default {
   setup() {
     const state = reactive({
       checkboxes: [
-        { value: "chat", label: "Chat", checked: false },
         { value: "url", label: "URL", checked: false },
+        { value: "chat", label: "Chat", checked: true },
         { value: "notes", label: "Notes", checked: true },
       ],
       url: "https://example.com",
@@ -176,29 +206,39 @@ export default {
       body: "",
       notes: "",
       header: "Hello team,",
-      prompt: "2+43243",
-      response: "",
-      key: "Bearer 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",
+      prompt: "",
+      response: {
+        text: "-",
+      },
+      key: "sk-",
+      loading: false,
     });
 
     async function fetchGpt3Response() {
-      const { post } = useFetch("/api/chat");
-
-      try {
-        const res = await post({
-          prompt: prompt.value,
+      state.loading = true;
+      await useFetch("https://api.openai.com/v1/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${state.key}`,
+        },
+        body: {
+          model: "text-davinci-003",
+          prompt: state.prompt,
+          max_tokens: 160,
+        },
+      })
+        .then((response) => {
+          state.response = response.data._rawValue.choices[0];
+          // remove line breaks
+          state.response.text = state.response.text.replace(
+            /(\r\n|\n|\r)/gm,
+            ""
+          );
+        })
+        .finally(() => {
+          state.loading = false;
         });
-
-        console.log(",fs,", res);
-
-        if (res.ok) {
-          response.value = res.data.choices[0].text;
-        } else {
-          console.error("Error:", res.error);
-        }
-      } catch (err) {
-        console.error(err);
-      }
     }
 
     function clear() {
@@ -208,6 +248,11 @@ export default {
       state.references = "";
       state.body = "";
       state.header = "";
+    }
+
+    function clearChat() {
+      state.prompt = "";
+      state.response.text = "-";
     }
 
     function copyToClipboard() {
@@ -220,14 +265,42 @@ export default {
       }
     }
 
+    function copyChatToClipboard() {
+      try {
+        navigator.clipboard.writeText(this.response.text);
+      } catch (error) {
+        console.error("Failed to copy text: ", error);
+      }
+    }
+
     return {
       ...toRefs(state),
       copyToClipboard,
+      copyChatToClipboard,
       clear,
+      clearChat,
       fetchGpt3Response,
     };
   },
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+.loading-spinner {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+</style>
