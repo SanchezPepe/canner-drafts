@@ -2,7 +2,6 @@
 import { NuxtConfig } from "@nuxt/types";
 
 const config: NuxtConfig = {
-  buildDir: "dist", // Specify the output directory for the built app
   head: {
     link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
   },
