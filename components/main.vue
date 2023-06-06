@@ -36,53 +36,30 @@
       </ul>
 
       <div class="border border-gray-500 rounded-lg bg-gray-800 text-white p-4">
-        <!-- Intro -->
         <TextArea
-          @emitData="(data) => (header = data)"
-          :rows="1"
-          label="Intro"
-          :text="header"
+          v-for="field in drafter"
+          :key="field.label"
+          @emitData="(data) => (field.text = data)"
+          :rows="field.rows"
+          :label="field.label"
+          :text="field.text"
         ></TextArea>
+      </div>
 
-        <!-- Body -->
-        <TextArea
-          @emitData="(data) => (body = data)"
-          :rows="20"
-          label="Body"
-          :text="body"
-        ></TextArea>
-
-        <!-- Signature -->
-        <TextArea
-          @emitData="(data) => (signature = data)"
-          :rows="6"
-          label="Signature"
-          :text="signature"
-        ></TextArea>
-
-        <!-- References -->
-        <TextArea
-          @emitData="(data) => (references = data)"
-          :rows="5"
-          label="References"
-          :text="references"
-        ></TextArea>
-
-        <!-- Buttons -->
-        <div class="grid grid-cols-2 gap-2 mt-2">
-          <button
-            @click="copyToClipboard"
-            class="inline-flex items-center p-2 font-medium justify-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 hover:bg-blue-800"
-          >
-            Copy to clipboard
-          </button>
-          <button
-            @click="clear"
-            class="inline-flex items-center p-2 font-medium justify-center text-white bg-red-800 rounded-lg focus:ring-4 focus:ring-red-200 hover:bg-red-800"
-          >
-            Clear all
-          </button>
-        </div>
+      <!-- Buttons -->
+      <div class="grid grid-cols-2 gap-2 mt-2">
+        <button
+          @click="copyToClipboard"
+          class="inline-flex items-center p-2 font-medium justify-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 hover:bg-blue-800"
+        >
+          Copy to clipboard
+        </button>
+        <button
+          @click="clear"
+          class="inline-flex items-center p-2 font-medium justify-center text-white bg-red-800 rounded-lg focus:ring-4 focus:ring-red-200 hover:bg-red-800"
+        >
+          Clear all
+        </button>
       </div>
     </div>
 
@@ -94,10 +71,10 @@
         class="border border-gray-500 rounded-lg bg-gray-800 text-white p-4"
       >
         <TextArea
-          @emitData="(data) => (notes = data)"
-          label="Case notes"
-          :rows="0"
-          :text="notes"
+          @emitData="(data) => (notes.text = data)"
+          :label="notes.label"
+          :rows="notes.rows"
+          :text="notes.text"
         ></TextArea>
       </div>
 
@@ -111,7 +88,7 @@
           <input
             type="text"
             id="small-input"
-            v-model="key"
+            v-model="chat.key"
             class="w-full p-2 text-xs text-white border border-gray-500 rounded-lg bg-gray-900 focus:ring-blue-500 focus:border-blue-500"
           />
 
@@ -127,7 +104,7 @@
           <!-- Prompt -->
           <textarea
             class="w-full p-3 text-sm text-white border border-gray-500 rounded-l-lg bg-gray-900 focus:ring-blue-500 focus:border-blue-500"
-            v-model="prompt"
+            v-model="chat.prompt"
             required
             :rows="2"
           />
@@ -147,7 +124,7 @@
         <label for="header" class="font-bold"> Response </label>
         <p
           class="w-full mt-2 p-3 text-sm text-white border border-gray-500 rounded-lg bg-gray-900 focus:ring-blue-500 focus:border-blue-500"
-          v-html="response.message"
+          v-html="chat.response.message"
         ></p>
 
         <!-- copy to clipboard button -->
@@ -169,7 +146,7 @@
         <!-- API usage -->
         <div class="mt-4 text-xs text-gray-400">
           <p>API Usage:</p>
-          <ul v-for="(value, index) in response.usage">
+          <ul v-for="(value, index) in chat.response.usage">
             <li>{{ index }} - {{ value }}</li>
           </ul>
         </div>
@@ -201,25 +178,51 @@
 export default {
   setup() {
     const state = reactive({
+      drafter: {
+        intro: {
+          label: "Intro",
+          text: "Hello team,",
+          rows: 1,
+        },
+        body: {
+          label: "Body",
+          text: "",
+          rows: 20,
+        },
+        signature: {
+          label: "Signature",
+          text: "",
+          rows: 6,
+        },
+        references: {
+          label: "References",
+          text: "",
+          rows: 5,
+        },
+      },
+      notes: {
+        label: "Case notes",
+        text: "",
+        rows: 0,
+      },
+      loading: false,
       checkboxes: [
         { value: "url", label: "URL", checked: false },
         { value: "chat", label: "Chat", checked: true },
         { value: "notes", label: "Notes", checked: true },
       ],
-      url: "https://example.com",
-      input: "",
-      signature: "",
-      references: "",
-      body: "",
-      notes: "",
-      header: "Hello team,",
-      prompt: "",
-      response: {
-        message: "-",
+      web: {
+        input: "",
+        url: "https://example.com",
       },
-      key: "sk-",
-      loading: false,
-      tokens: ["Prompt", "Completion", "Total"],
+      chat: {
+        key: "sk-",
+        prompt: "",
+        response: {
+          message: "-",
+        },
+        tokens: ["Prompt", "Completion", "Total"],
+      },
     });
 
     async function fetchGpt3Response() {
@@ -228,23 +231,24 @@ export default {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${state.key}`,
+          Authorization: `Bearer ${state.chat.key}`,
         },
         body: {
           model: "gpt-3.5-turbo",
-          messages: [{ role: "user", content: state.prompt }],
+          messages: [{ role: "user", content: state.chat.prompt }],
           max_tokens: 200,
         },
       })
         .then((response) => {
-          state.response = response.data._rawValue;
+          state.chat.response = response.data._rawValue;
           // remove line breaks
 
-          console.log(state.response);
-
           // replace line breaks with <br />
-          state.response.message =
-            state.response.choices[0].message.content.replace(/\n/g, "<br />");
+          state.chat.response.message =
+            state.chat.response.choices[0].message.content.replace(
+              /\n/g,
+              "<br />"
+            );
         })
         .catch((error) => {
           console.error(error);
@@ -256,21 +260,37 @@ export default {
     }
 
     function clear() {
-      state.input1 = "";
-      state.input2 = "";
-      state.signature = "";
-      state.references = "";
-      state.body = "";
-      state.header = "";
+      state.drafter = {
+        header: {
+          label: "Intro",
+          text: "Hello team,",
+          rows: 1,
+        },
+        body: {
+          label: "Body",
+          text: "",
+          rows: 20,
+        },
+        signature: {
+          label: "Signature",
+          text: "",
+          rows: 6,
+        },
+        references: {
+          label: "References",
+          text: "",
+          rows: 5,
+        },
+      };
     }
 
     function clearChat() {
-      state.prompt = "";
-      state.response.message = "-";
+      state.chat.prompt = "";
+      state.chat.response.message = "-";
     }
 
     function copyToClipboard() {
-      const text = `${this.header}\n\n${this.body}\n\n${this.signature}\n\n${this.references}`;
+      const text = `${this.drafter.intro.text}\n\n${this.drafter.body.text}\n\n${this.drafter.signature.text}\n\n${this.drafter.references.text}`;
 
       try {
         navigator.clipboard.writeText(text);
@@ -281,7 +301,7 @@ export default {
 
     function copyChatToClipboard() {
       try {
-        navigator.clipboard.writeText(this.response.message);
+        navigator.clipboard.writeText(this.chat.response.message);
       } catch (error) {
         console.error("Failed to copy text: ", error);
       }
