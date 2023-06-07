@@ -35,7 +35,10 @@
         </li>
       </ul>
 
-      <div class="border border-gray-500 rounded-lg bg-gray-800 text-white p-4">
+      <div
+        class="border border-gray-500 rounded-lg bg-gray-800 text-white p-4"
+        :key="refresh"
+      >
         <TextArea
           v-for="field in drafter"
           :key="field.label"
@@ -205,6 +208,7 @@ export default {
         text: "",
         rows: 0,
       },
+      refresh: 0,
       loading: false,
       checkboxes: [
         { value: "url", label: "URL", checked: false },
@@ -260,28 +264,11 @@ export default {
     }
 
     function clear() {
-      state.drafter = {
-        header: {
-          label: "Intro",
-          text: "Hello team,",
-          rows: 1,
-        },
-        body: {
-          label: "Body",
-          text: "",
-          rows: 20,
-        },
-        signature: {
-          label: "Signature",
-          text: "",
-          rows: 6,
-        },
-        references: {
-          label: "References",
-          text: "",
-          rows: 5,
-        },
-      };
+      Object.keys(state.drafter).forEach((key) => {
+        state.drafter[key].text = "";
+      });
+
+      state.refresh++;
     }
 
     function clearChat() {
