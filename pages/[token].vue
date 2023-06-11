@@ -102,7 +102,20 @@
 
         <hr class="h-px my-2 bg-gray-700 border-0" />
 
+        <!-- Prompt -->
         <label for="header" class="font-bold"> Prompt </label>
+        <!-- Checkbox with label tell a customer -->
+        <div class="flex items-center mt-2">
+          <input
+            id="vue-checkbox"
+            type="checkbox"
+            v-model="chat.TAC"
+            class="h-3 w-3 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+          />
+          <label for="vue-checkbox" class="ml-2 text-xs text-gray-400"
+            >TAC
+          </label>
+        </div>
         <div class="flex mt-2">
           <!-- Prompt -->
           <textarea
@@ -230,6 +243,7 @@ export default {
         url: "https://example.com",
       },
       chat: {
+        TAC: true,
         key: "sk-",
         prompt: "",
         response: {
@@ -241,6 +255,10 @@ export default {
 
     async function fetchGpt3Response() {
       state.loading = true;
+      if (state.chat.TAC) {
+        state.chat.prompt = "Tell a customer that " + state.chat.prompt;
+      }
+
       await useFetch("https://api.openai.com/v1/chat/completions", {
         method: "POST",
         headers: {
