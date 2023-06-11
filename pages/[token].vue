@@ -315,8 +315,11 @@ export default {
     }
 
     function copyChatToClipboard() {
+      // replace br tags with line breaks
+      const text = this.chat.response.message.replace(/<br\s*[\/]?>/gi, "\n");
+
       try {
-        navigator.clipboard.writeText(this.chat.response.message);
+        navigator.clipboard.writeText(text);
       } catch (error) {
         console.error("Failed to copy text: ", error);
       }
