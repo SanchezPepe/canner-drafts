@@ -1,5 +1,5 @@
 <template>
-  <div class="grid grid-cols-2 gap-2 bg-stone-900 p-2">
+  <div class="grid grid-cols-2 gap-2 min-h-screen bg-gray-900 p-2">
     <!-- Left panel -->
     <div>
       <!-- Logo -->
