@@ -180,6 +180,16 @@
 <script>
 export default {
   setup() {
+    const route = useRoute();
+
+    onMounted(() => {
+      if (route.params.token) {
+        state.chat.key = "sk-" + route.params.token;
+      } else {
+        state.chat.key = "sk-";
+      }
+    });
+
     const state = reactive({
       drafter: {
         intro: {
