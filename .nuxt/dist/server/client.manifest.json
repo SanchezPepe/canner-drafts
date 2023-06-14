@@ -6,10 +6,10 @@
     "module": true,
     "resourceType": "script"
   },
-  "/Users/jjsa/Documents/Code/Canner/node_modules/nuxt/dist/app/entry.js": {
+  "/workspaces/canner-drafts/node_modules/nuxt/dist/app/entry.js": {
     "resourceType": "script",
     "module": true,
     "isEntry": true,
-    "file": "/Users/jjsa/Documents/Code/Canner/node_modules/nuxt/dist/app/entry.js"
+    "file": "/workspaces/canner-drafts/node_modules/nuxt/dist/app/entry.js"
   }
 }

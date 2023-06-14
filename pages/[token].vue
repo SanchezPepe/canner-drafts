@@ -104,23 +104,38 @@
 
         <!-- Prompt -->
         <label for="header" class="font-bold"> Prompt </label>
-        <!-- Checkbox with label tell a customer -->
-        <div class="flex items-center mt-2">
-          <input
-            id="vue-checkbox"
-            type="checkbox"
-            v-model="chat.TAC"
-            class="h-3 w-3 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-          />
-          <label for="vue-checkbox" class="ml-2 text-xs text-gray-400"
-            >TAC
+        <!-- Radiogrup with label tell or ask a customer -->
+        <div class="flex space-x-4 items-center w-full py-1 ml-1">
+          <!-- Tell a customer -->
+
+          <label
+            :key="option.value"
+            class="text-xs text-gray-400 flex flex-row items-center space-x-2"
+            v-for="option in chat.options"
+          >
+            <input
+              class="h-3 w-3 text-blue-600 bg-gray-100 border-gray-300 rounded"
+              type="radio"
+              :value="option.value"
+              :checked="chat.selectedRadio === option.value"
+              @change="
+                (value) => {
+                  console.log(value);
+                  chat.selectedRadio = value.target.value;
+                }
+              "
+            />
+            <p class="font-bold">
+              {{ option.value }}
+            </p>
           </label>
         </div>
+
         <div class="flex mt-2">
           <!-- Prompt -->
           <textarea
             class="w-full p-3 text-sm text-white border border-gray-500 rounded-l-lg bg-gray-900 focus:ring-blue-500 focus:border-blue-500"
-            v-model="chat.prompt"
+            v-model="chat.input"
             required
             :rows="2"
           />
@@ -162,6 +177,7 @@
         <!-- API usage -->
         <div class="mt-4 text-xs text-gray-400">
           <p>API Usage:</p>
+          Query: {{ chat.query }}
           <ul v-for="(value, index) in chat.response.usage">
             <li>{{ index }} - {{ value }}</li>
           </ul>
@@ -243,9 +259,14 @@ export default {
         url: "https://example.com",
       },
       chat: {
-        TAC: true,
+        options: [
+          { label: "Tell a customer that", value: "TAC" },
+          { label: "Ask a customer", value: "AAC" },
+        ],
+        selectedRadio: "TAC",
         key: "sk-",
-        prompt: "",
+        input: "",
+        query: "",
         response: {
           message: "-",
         },
@@ -255,8 +276,17 @@ export default {
 
     async function fetchGpt3Response() {
       state.loading = true;
-      if (state.chat.TAC) {
-        state.chat.prompt = "Tell a customer that " + state.chat.prompt;
+
+      switch (state.chat.selectedRadio) {
+        case "TAC":
+          state.chat.query = "Tell a customer that " + state.chat.input;
+          break;
+        case "AAC":
+          state.chat.query = "Ask a customer " + state.chat.input;
+          break;
+
+        default:
+          break;
       }
 
       await useFetch("https://api.openai.com/v1/chat/completions", {
@@ -267,11 +297,12 @@ export default {
         },
         body: {
           model: "gpt-3.5-turbo",
-          messages: [{ role: "user", content: state.chat.prompt }],
-          max_tokens: 200,
+          messages: [{ role: "user", content: state.chat.query }],
+          max_tokens: 500,
         },
       })
         .then((response) => {
+          console.log(response);
           state.chat.response = response.data._rawValue;
           // remove line breaks
 
@@ -300,7 +331,7 @@ export default {
     }
 
     function clearChat() {
-      state.chat.prompt = "";
+      state.chat.input = "";
       state.chat.response.message = "-";
     }
 
