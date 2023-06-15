@@ -262,6 +262,7 @@ export default {
         options: [
           { label: "Tell a customer that", value: "TAC" },
           { label: "Ask a customer", value: "AAC" },
+          { label: "Ask a customer", value: "EMPTY" },
         ],
         selectedRadio: "TAC",
         key: "sk-",
@@ -284,7 +285,9 @@ export default {
         case "AAC":
           state.chat.query = "Ask a customer " + state.chat.input;
           break;
-
+        case "EMPTY":
+          state.chat.query = state.chat.input;
+          break;
         default:
           break;
       }
