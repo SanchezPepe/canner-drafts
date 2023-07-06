@@ -343,6 +343,7 @@ export default {
       clearDraft();
       clearChat();
       clearNotes();
+      state.refresh++;
     }
 
     function copyToClipboard() {
@@ -372,6 +373,7 @@ export default {
       copyChatToClipboard,
       clearDraft,
       clearChat,
+      clearAll,
       fetchGpt3Response,
       useChat,
     };
