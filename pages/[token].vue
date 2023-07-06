@@ -9,31 +9,32 @@
         CR's Drafts
       </p>
 
-      <ul
-        class="bg-gray-800 border-gray-500 items-center mb-2 w-full text-sm font-medium text-white border rounded-lg sm:flex"
+      <div
+        class="flex bg-gray-800 border-gray-500 items-center mb-2 w-full text-sm font-medium text-white border rounded-lg sm:flex"
       >
-        <li
-          v-for="(checkbox, index) in checkboxes"
-          :key="index"
-          :class="index !== 0 ? 'sm:border-l' : ''"
-          class="w-full border-b border-gray-500 sm:border-b-0"
+        <div
+          class="flex-1 w-1/3 border-r border-gray-500"
+          v-for="checkbox in checkboxes"
         >
-          <div class="flex items-center pl-3">
+          <label
+            class="flex items-center py-3 ml-2 text-sm text-white font-semibold"
+          >
             <input
-              id="vue-checkbox-list"
               type="checkbox"
               :value="checkbox.checked"
               v-model="checkbox.checked"
-              class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+              class="w-4 h-4 mr-2 text-blue-600 rounded bg-gray-100 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
             />
-            <label
-              for="vue-checkbox-list"
-              class="w-full py-3 ml-2 text-sm text-white font-semibold"
-              >{{ checkbox.label }}
-            </label>
-          </div>
-        </li>
-      </ul>
+            {{ checkbox.label }}
+          </label>
+        </div>
+        <button
+          @click="clearAll"
+          class="flex-1 w-1/3 rounded-r py-3 text-sm text-white font-semibold bg-red-500"
+        >
+          Clear all
+        </button>
+      </div>
 
       <div
         class="border border-gray-500 rounded-lg bg-gray-800 text-white p-4"
@@ -47,44 +48,45 @@
           :label="field.label"
           :text="field.text"
         ></TextArea>
-      </div>
 
-      <!-- Buttons -->
-      <div class="grid grid-cols-2 gap-2 mt-2">
-        <button
-          @click="copyToClipboard"
-          class="inline-flex items-center p-2 font-medium justify-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 hover:bg-blue-800"
-        >
-          Copy to clipboard
-        </button>
-        <button
-          @click="clear"
-          class="inline-flex items-center p-2 font-medium justify-center text-white bg-red-800 rounded-lg focus:ring-4 focus:ring-red-200 hover:bg-red-800"
-        >
-          Clear all
-        </button>
+        <!-- Buttons -->
+        <div class="grid grid-cols-2 gap-2 mt-2">
+          <button
+            @click="copyToClipboard"
+            class="inline-flex items-center p-2 font-medium justify-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 hover:bg-blue-800"
+          >
+            Copy to clipboard
+          </button>
+          <button
+            @click="clearDraft"
+            class="inline-flex items-center p-2 font-medium justify-center text-white bg-red-800 rounded-lg focus:ring-4 focus:ring-red-200 hover:bg-red-800"
+          >
+            Clear
+          </button>
+        </div>
       </div>
     </div>
 
     <!-- Right panel -->
-    <div class="grid grid-cols-1 h-full gap-2">
+    <div class="flex flex-col space-y-2">
       <!-- Case notes -->
       <div
-        v-if="checkboxes[2].checked"
-        class="border border-gray-500 rounded-lg bg-gray-800 text-white p-4"
+        v-if="checkboxes[1].checked"
+        class="border flex-1 h-1/2 border-gray-500 rounded-lg bg-gray-800 text-white p-4"
       >
         <TextArea
-          @emitData="(data) => (notes.text = data)"
+          :key="refresh"
           :label="notes.label"
           :rows="notes.rows"
           :text="notes.text"
+          @emitData="(data) => (notes.text = data)"
         ></TextArea>
       </div>
 
       <!-- Chat -->
       <div
-        v-if="checkboxes[1].checked"
-        class="border border-gray-500 rounded-lg bg-gray-800 text-white p-4"
+        v-if="checkboxes[0].checked"
+        class="flex-1 h-1/2 border border-gray-500 rounded-lg bg-gray-800 text-white p-4"
       >
         <label for="header" class="font-bold mb-2"> Chat </label>
         <div class="flex flex-row space-x-2 items-center">
@@ -159,7 +161,13 @@
         ></p>
 
         <!-- copy to clipboard button -->
-        <div class="grid grid-cols-2 gap-2 mt-2">
+        <div class="grid grid-cols-3 gap-2 mt-2">
+          <button
+            @click="useChat"
+            class="inline-flex items-center p-2 font-medium justify-center text-white bg-green-800 rounded-lg focus:ring-4 focus:ring-red-200 hover:bg-green-800"
+          >
+            Use
+          </button>
           <button
             @click="copyChatToClipboard"
             class="inline-flex items-center p-2 font-medium justify-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 hover:bg-blue-800"
@@ -182,25 +190,6 @@
             <li>{{ index }} - {{ value }}</li>
           </ul>
         </div>
-      </div>
-
-      <!-- Browser -->
-      <div v-if="checkboxes[0].checked">
-        <div class="flex">
-          <input
-            class="w-full p-3 text-sm text-white border border-gray-500 rounded-tl-lg bg-gray-900 focus:ring-blue-500 focus:border-blue-500"
-            placeholder="URL"
-            v-model="input"
-            required
-          />
-          <button
-            @click="url = input"
-            class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-tr-lg text-sm px-4 py-2 dark:bg-blue-600"
-          >
-            Set
-          </button>
-        </div>
-        <iframe class="rounded-b-lg h-[90%] w-full" :src="url"></iframe>
       </div>
     </div>
   </div>
@@ -243,21 +232,16 @@ export default {
         },
       },
       notes: {
-        label: "Case notes",
+        label: "Notes",
         text: "",
         rows: 0,
       },
       refresh: 0,
       loading: false,
       checkboxes: [
-        { value: "url", label: "URL", checked: false },
         { value: "chat", label: "Chat", checked: true },
         { value: "notes", label: "Notes", checked: true },
       ],
-      web: {
-        input: "",
-        url: "https://example.com",
-      },
       chat: {
         options: [
           { label: "Tell a customer that", value: "TAC" },
@@ -325,7 +309,7 @@ export default {
         });
     }
 
-    function clear() {
+    function clearDraft() {
       Object.keys(state.drafter).forEach((key) => {
         state.drafter[key].text = "";
       });
@@ -333,9 +317,32 @@ export default {
       state.refresh++;
     }
 
+    function useChat() {
+      const text = state.chat.response.message.replace(/<br\s*[\/]?>/gi, "\n");
+      if (state.drafter.body.text.length > 0) {
+        state.drafter.body.text += "\n\n=========================\n";
+        state.drafter.body.text += text;
+        state.drafter.body.text += "\n=========================";
+      } else {
+        state.drafter.body.text += text;
+      }
+
+      state.refresh++;
+    }
+
     function clearChat() {
       state.chat.input = "";
       state.chat.response.message = "-";
+    }
+
+    function clearNotes() {
+      state.notes.text = "";
+    }
+
+    function clearAll() {
+      clearDraft();
+      clearChat();
+      clearNotes();
     }
 
     function copyToClipboard() {
@@ -363,9 +370,10 @@ export default {
       ...toRefs(state),
       copyToClipboard,
       copyChatToClipboard,
-      clear,
+      clearDraft,
       clearChat,
       fetchGpt3Response,
+      useChat,
     };
   },
 };

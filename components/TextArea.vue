@@ -1,8 +1,7 @@
 <template>
-  <label for="header" class="font-bold"> {{ props.label }} </label>
+  <label class="font-bold"> {{ props.label }} </label>
   <textarea
     v-model="state.input"
-    id="header"
     :disabled="props.disabled"
     :rows="props.rows"
     :class="props.rows === 0 ? 'h-[90%]' : ''"
