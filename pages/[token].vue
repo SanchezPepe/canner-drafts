@@ -3,21 +3,19 @@
     <!-- Left panel -->
     <div>
       <!-- Logo -->
-      <p
-        class="bg-gray-800 self-center text-white text-2xl font-semibold whitespace-nowrap mb-2 rounded-lg p-2 border-gray-500 border"
-      >
-        CR's Drafts
-      </p>
-
       <div
-        class="flex bg-gray-800 border-gray-500 items-center mb-2 w-full text-sm font-medium text-white border rounded-lg sm:flex"
+        class="flex w-full mb-2 bg-gray-800 text-white text-2xl font-semibold whitespace-nowrap rounded-lg border-gray-500 border"
       >
+        <p class="flex-1 ml-2 w-1/4 self-center border-r border-gray-500">
+          CR's Drafts
+        </p>
+
         <div
-          class="flex-1 w-1/3 border-r border-gray-500"
+          class="flex-1 w-1/4 border-r border-gray-500"
           v-for="checkbox in checkboxes"
         >
           <label
-            class="flex items-center py-3 ml-2 text-sm text-white font-semibold"
+            class="flex items-center py-2 ml-2 text-sm text-white font-semibold"
           >
             <input
               type="checkbox"
@@ -30,12 +28,13 @@
         </div>
         <button
           @click="clearAll"
-          class="flex-1 w-1/3 rounded-r py-3 text-sm text-white font-semibold bg-red-500"
+          class="flex-1 w-1/4 grow rounded-r-lg text-sm text-white font-semibold bg-red-500"
         >
           Clear all
         </button>
       </div>
 
+      <!-- Drafter -->
       <div
         class="border border-gray-500 rounded-lg bg-gray-800 text-white p-4"
         :key="refresh"
@@ -69,20 +68,6 @@
 
     <!-- Right panel -->
     <div class="flex flex-col space-y-2">
-      <!-- Case notes -->
-      <div
-        v-if="checkboxes[1].checked"
-        class="border flex-1 h-1/2 border-gray-500 rounded-lg bg-gray-800 text-white p-4"
-      >
-        <TextArea
-          :key="refresh"
-          :label="notes.label"
-          :rows="notes.rows"
-          :text="notes.text"
-          @emitData="(data) => (notes.text = data)"
-        ></TextArea>
-      </div>
-
       <!-- Chat -->
       <div
         v-if="checkboxes[0].checked"
@@ -190,6 +175,20 @@
             <li>{{ index }} - {{ value }}</li>
           </ul>
         </div>
+      </div>
+
+      <!-- Case notes -->
+      <div
+        v-if="checkboxes[1].checked"
+        class="border flex-1 h-1/2 border-gray-500 rounded-lg bg-gray-800 text-white p-4"
+      >
+        <TextArea
+          :key="refresh"
+          :label="notes.label"
+          :rows="notes.rows"
+          :text="notes.text"
+          @emitData="(data) => (notes.text = data)"
+        ></TextArea>
       </div>
     </div>
   </div>
