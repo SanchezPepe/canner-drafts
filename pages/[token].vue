@@ -1,8 +1,8 @@
 <template>
-  <div class="grid grid-cols-2 gap-2 min-h-screen bg-gray-900 p-2">
+  <div class="grid grid-cols-3 gap-2 min-h-screen bg-gray-900 p-2">
     <!-- Left panel -->
-    <div>
-      <!-- Logo -->
+    <div class="flex flex-col">
+      <!-- Logo and checkboxes -->
       <div
         class="flex w-full mb-2 bg-gray-800 text-white text-2xl font-semibold whitespace-nowrap rounded-lg border-gray-500 border"
       >
@@ -11,7 +11,7 @@
         </p>
 
         <div
-          class="flex-1 w-1/4 border-r border-gray-500"
+          class="flex items-center w-1/4 border-r border-gray-500"
           v-for="checkbox in checkboxes"
         >
           <label
@@ -34,35 +34,48 @@
         </button>
       </div>
 
-      <!-- Drafter -->
+      <!-- Case notes -->
       <div
-        class="border border-gray-500 rounded-lg bg-gray-800 text-white p-4"
-        :key="refresh"
+        v-if="checkboxes[1].checked"
+        class="border flex-1 h-full border-gray-500 rounded-lg bg-gray-800 text-white p-4"
       >
-        <TextArea
-          v-for="field in drafter"
-          :key="field.label"
-          @emitData="(data) => (field.text = data)"
-          :rows="field.rows"
-          :label="field.label"
-          :text="field.text"
-        ></TextArea>
+        <label class="font-bold"> {{ notes.label }} </label>
+        <textarea
+          v-model="notes.text"
+          :rows="notes.rows"
+          class="w-full h-[95%] p-4 rounded-xl my-2 text-sm text-white bg-gray-900 border-1 border-gray-500 focus:ring-0"
+        ></textarea>
+      </div>
+    </div>
 
-        <!-- Buttons -->
-        <div class="grid grid-cols-2 gap-2 mt-2">
-          <button
-            @click="copyToClipboard"
-            class="inline-flex items-center p-2 font-medium justify-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 hover:bg-blue-800"
-          >
-            Copy to clipboard
-          </button>
-          <button
-            @click="clearDraft"
-            class="inline-flex items-center p-2 font-medium justify-center text-white bg-red-800 rounded-lg focus:ring-4 focus:ring-red-200 hover:bg-red-800"
-          >
-            Clear
-          </button>
-        </div>
+    <!-- Middle panel -->
+    <div
+      class="border border-gray-500 rounded-lg bg-gray-800 text-white p-4 flex flex-col"
+    >
+      <!-- Drafter -->
+      <div v-for="section in drafter" :key="refresh">
+        <label class="font-bold"> {{ section.label }} </label>
+        <textarea
+          v-model="section.text"
+          :rows="section.rows"
+          class="w-full p-4 rounded-xl my-2 text-sm text-white bg-gray-900 border-1 border-gray-500 focus:ring-0"
+        ></textarea>
+      </div>
+
+      <!-- Buttons -->
+      <div class="grid grid-cols-2 gap-2 mt-2">
+        <button
+          @click="copyToClipboard"
+          class="inline-flex items-center p-2 font-medium justify-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 hover:bg-blue-800"
+        >
+          Copy to clipboard
+        </button>
+        <button
+          @click="clearDraft"
+          class="inline-flex items-center p-2 font-medium justify-center text-white bg-red-800 rounded-lg focus:ring-4 focus:ring-red-200 hover:bg-red-800"
+        >
+          Clear
+        </button>
       </div>
     </div>
 
@@ -71,23 +84,16 @@
       <!-- Chat -->
       <div
         v-if="checkboxes[0].checked"
-        class="flex-1 h-1/2 border border-gray-500 rounded-lg bg-gray-800 text-white p-4"
+        class="flex-1 h-full border border-gray-500 rounded-lg bg-gray-800 text-white p-4"
       >
-        <label for="header" class="font-bold mb-2"> Chat </label>
-        <div class="flex flex-row space-x-2 items-center">
-          <input
-            type="text"
-            id="small-input"
-            v-model="chat.key"
-            class="w-full p-2 text-xs text-white border border-gray-500 rounded-lg bg-gray-900 focus:ring-blue-500 focus:border-blue-500"
-          />
-
-          <div v-if="loading" class="flex flex-col items-center">
-            <div class="loading-spinner"></div>
-          </div>
+        <div class="flex flex-row items-center space-x-2">
+          <label for="header" class="flex grow font-bold text-sm">
+            Chat: {{ chat.key }}
+          </label>
+          <div v-if="loading" class="loading-spinner"></div>
         </div>
 
-        <hr class="h-px my-2 bg-gray-700 border-0" />
+        <hr class="my-2 border-gray-500" />
 
         <!-- Prompt -->
         <label for="header" class="font-bold"> Prompt </label>
@@ -118,7 +124,7 @@
           </label>
         </div>
 
-        <div class="flex mt-2">
+        <div class="flex my-2">
           <!-- Prompt -->
           <textarea
             class="w-full p-3 text-sm text-white border border-gray-500 rounded-l-lg bg-gray-900 focus:ring-blue-500 focus:border-blue-500"
@@ -135,15 +141,6 @@
             Submit
           </button>
         </div>
-
-        <br />
-
-        <!-- Response -->
-        <label for="header" class="font-bold"> Response </label>
-        <p
-          class="w-full mt-2 p-3 text-sm text-white border border-gray-500 rounded-lg bg-gray-900 focus:ring-blue-500 focus:border-blue-500"
-          v-html="chat.response.message"
-        ></p>
 
         <!-- copy to clipboard button -->
         <div class="grid grid-cols-3 gap-2 mt-2">
@@ -168,27 +165,21 @@
         </div>
 
         <!-- API usage -->
-        <div class="mt-4 text-xs text-gray-400">
+        <div class="my-2 text-xs text-gray-400 border border-gray-500 p-2">
           <p>API Usage:</p>
           Query: {{ chat.query }}
+          <hr v-if="chat.query" class="my-1 border-gray-500" />
           <ul v-for="(value, index) in chat.response.usage">
             <li>{{ index }} - {{ value }}</li>
           </ul>
         </div>
-      </div>
 
-      <!-- Case notes -->
-      <div
-        v-if="checkboxes[1].checked"
-        class="border flex-1 h-1/2 border-gray-500 rounded-lg bg-gray-800 text-white p-4"
-      >
-        <TextArea
-          :key="refresh"
-          :label="notes.label"
-          :rows="notes.rows"
-          :text="notes.text"
-          @emitData="(data) => (notes.text = data)"
-        ></TextArea>
+        <!-- Response -->
+        <label class="font-bold"> Response </label>
+        <p
+          class="mt-2 text-sm text-gray-400 border border-gray-500 p-2"
+          v-html="chat.response.message"
+        ></p>
       </div>
     </div>
   </div>
@@ -233,7 +224,7 @@ export default {
       notes: {
         label: "Notes",
         text: "",
-        rows: 0,
+        rows: 15,
       },
       refresh: 0,
       loading: false,
