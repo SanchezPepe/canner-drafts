@@ -1,5 +1,5 @@
 
-import { defuFn } from '/workspaces/canner-drafts/node_modules/defu/dist/defu.mjs'
+import { defuFn } from '/Users/jjsa/Documents/Code/Canner/node_modules/defu/dist/defu.mjs'
 
 const inlineConfig = {}
 

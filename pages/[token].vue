@@ -10,25 +10,9 @@
           CR's Drafts
         </p>
 
-        <div
-          class="flex items-center w-1/4 border-r border-gray-500"
-          v-for="checkbox in checkboxes"
-        >
-          <label
-            class="flex items-center py-2 ml-2 text-sm text-white font-semibold"
-          >
-            <input
-              type="checkbox"
-              :value="checkbox.checked"
-              v-model="checkbox.checked"
-              class="w-4 h-4 mr-2 text-blue-600 rounded bg-gray-100 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-            />
-            {{ checkbox.label }}
-          </label>
-        </div>
         <button
           @click="clearAll"
-          class="flex-1 w-1/4 grow rounded-r-lg text-sm text-white font-semibold bg-red-500"
+          class="flex-1 w-1/4 grow rounded-r-md text-sm text-white font-semibold bg-red-500"
         >
           Clear all
         </button>
@@ -36,7 +20,6 @@
 
       <!-- Case notes -->
       <div
-        v-if="checkboxes[1].checked"
         class="border flex-1 h-full border-gray-500 rounded-lg bg-gray-800 text-white p-4"
       >
         <label class="font-bold"> {{ notes.label }} </label>
@@ -83,7 +66,6 @@
     <div class="flex flex-col space-y-2">
       <!-- Chat -->
       <div
-        v-if="checkboxes[0].checked"
         class="flex-1 h-full border border-gray-500 rounded-lg bg-gray-800 text-white p-4"
       >
         <div class="flex flex-row items-center space-x-2">
@@ -208,7 +190,7 @@ export default {
         body: {
           label: "Body",
           text: "",
-          rows: 20,
+          rows: 25,
         },
         signature: {
           label: "Signature",
@@ -228,15 +210,11 @@ export default {
       },
       refresh: 0,
       loading: false,
-      checkboxes: [
-        { value: "chat", label: "Chat", checked: true },
-        { value: "notes", label: "Notes", checked: true },
-      ],
       chat: {
         options: [
-          { label: "Tell a customer that", value: "TAC" },
-          { label: "Ask a customer", value: "AAC" },
-          { label: "Ask a customer", value: "EMPTY" },
+          { label: "Tell a customer that", value: "TELLC" },
+          { label: "Ask a customer", value: "ASKC" },
+          { label: "", value: "EMPTY" },
         ],
         selectedRadio: "TAC",
         key: "sk-",
