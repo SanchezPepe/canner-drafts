@@ -216,7 +216,6 @@ export default {
           { label: "Ask a customer", value: "ASKC" },
           { label: "", value: "EMPTY" },
         ],
-        selectedRadio: "TAC",
         key: "sk-",
         input: "",
         query: "",
@@ -231,10 +230,10 @@ export default {
       state.loading = true;
 
       switch (state.chat.selectedRadio) {
-        case "TAC":
+        case "TELLC":
           state.chat.query = "Tell a customer that " + state.chat.input;
           break;
-        case "AAC":
+        case "ASKC":
           state.chat.query = "Ask a customer " + state.chat.input;
           break;
         case "EMPTY":
