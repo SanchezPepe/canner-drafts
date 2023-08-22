@@ -119,7 +119,7 @@
         <!-- copy to clipboard button -->
         <div class="grid grid-cols-3 gap-2 mt-2">
           <button
-            @click="copyChatToClipboard"
+            @click="fetchGpt3Response"
             class="inline-flex items-center p-2 font-medium justify-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 hover:bg-blue-800"
           >
             Submit
