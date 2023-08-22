@@ -109,34 +109,26 @@
         <div class="flex my-2">
           <!-- Prompt -->
           <textarea
-            class="w-full p-3 text-sm text-white border border-gray-500 rounded-l-lg bg-gray-900 focus:ring-blue-500 focus:border-blue-500"
+            class="w-full p-3 text-sm text-white border border-gray-500 rounded-lg bg-gray-900 focus:ring-blue-500 focus:border-blue-500"
             v-model="chat.input"
             required
-            :rows="2"
+            :rows="5"
           />
-
-          <!-- Submit button -->
-          <button
-            @click="fetchGpt3Response"
-            class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-r-lg text-sm px-4 py-2 dark:bg-blue-600"
-          >
-            Submit
-          </button>
         </div>
 
         <!-- copy to clipboard button -->
         <div class="grid grid-cols-3 gap-2 mt-2">
           <button
+            @click="copyChatToClipboard"
+            class="inline-flex items-center p-2 font-medium justify-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 hover:bg-blue-800"
+          >
+            Submit
+          </button>
+          <button
             @click="useChat"
             class="inline-flex items-center p-2 font-medium justify-center text-white bg-green-800 rounded-lg focus:ring-4 focus:ring-red-200 hover:bg-green-800"
           >
             Use
-          </button>
-          <button
-            @click="copyChatToClipboard"
-            class="inline-flex items-center p-2 font-medium justify-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 hover:bg-blue-800"
-          >
-            Copy to clipboard
           </button>
           <button
             @click="clearChat"
@@ -182,11 +174,6 @@ export default {
 
     const state = reactive({
       drafter: {
-        intro: {
-          label: "Intro",
-          text: "Hello team,",
-          rows: 1,
-        },
         body: {
           label: "Body",
           text: "",
@@ -195,7 +182,7 @@ export default {
         signature: {
           label: "Signature",
           text: "",
-          rows: 6,
+          rows: 4,
         },
         references: {
           label: "References",
@@ -219,6 +206,7 @@ export default {
         key: "sk-",
         input: "",
         query: "",
+        selectedRadio: "TELLC",
         response: {
           message: "-",
         },
@@ -314,7 +302,7 @@ export default {
     }
 
     function copyToClipboard() {
-      const text = `${this.drafter.intro.text}\n\n${this.drafter.body.text}\n\n${this.drafter.signature.text}\n\n${this.drafter.references.text}`;
+      const text = `${this.drafter.body.text}\n\n${this.drafter.signature.text}\n\n${this.drafter.references.text}`;
 
       try {
         navigator.clipboard.writeText(text);

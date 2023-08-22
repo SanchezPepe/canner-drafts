@@ -1,15 +1,17 @@
-import { _ as _export_sfc, a as useHead } from '../server.mjs';
+import { d as useHead } from '../server.mjs';
 import { mergeProps, useSSRContext } from 'vue';
 import { ssrRenderAttrs, ssrInterpolate } from 'vue/server-renderer';
+import { _ as _export_sfc } from './_plugin-vue_export-helper-cc2b3d55.mjs';
 import 'ofetch';
 import 'hookable';
 import 'unctx';
 import 'h3';
-import 'ufo';
 import '@unhead/ssr';
 import 'unhead';
 import '@unhead/shared';
-import 'ohash';
+import 'vue-router';
+import 'ufo';
+import 'defu';
 import '../../nitro/node-server.mjs';
 import 'node-fetch-native/polyfill';
 import 'node:http';
@@ -18,7 +20,7 @@ import 'destr';
 import 'unenv/runtime/fetch/index';
 import 'scule';
 import 'klona';
-import 'defu';
+import 'ohash';
 import 'unstorage';
 import 'radix3';
 import 'node:fs';
@@ -75,4 +77,4 @@ _sfc_main.setup = (props, ctx) => {
 const error500 = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-32388612"]]);
 
 export { error500 as default };
-//# sourceMappingURL=error-500-e431f503.mjs.map
+//# sourceMappingURL=error-500-17a463bc.mjs.map

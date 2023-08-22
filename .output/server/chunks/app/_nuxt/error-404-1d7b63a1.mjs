@@ -1,7 +1,8 @@
 import { mergeProps, withCtx, createTextVNode, toDisplayString, useSSRContext, defineComponent, computed, ref, h, resolveComponent } from 'vue';
 import { hasProtocol, parseURL, parseQuery, withTrailingSlash, withoutTrailingSlash } from 'ufo';
-import { _ as _export_sfc, a as useHead, u as useRouter, n as navigateTo } from '../server.mjs';
+import { d as useHead, b as useRouter, n as navigateTo } from '../server.mjs';
 import { ssrRenderAttrs, ssrInterpolate, ssrRenderComponent } from 'vue/server-renderer';
+import { _ as _export_sfc } from './_plugin-vue_export-helper-cc2b3d55.mjs';
 import 'ofetch';
 import 'hookable';
 import 'unctx';
@@ -9,7 +10,8 @@ import 'h3';
 import '@unhead/ssr';
 import 'unhead';
 import '@unhead/shared';
-import 'ohash';
+import 'vue-router';
+import 'defu';
 import '../../nitro/node-server.mjs';
 import 'node-fetch-native/polyfill';
 import 'node:http';
@@ -18,7 +20,7 @@ import 'destr';
 import 'unenv/runtime/fetch/index';
 import 'scule';
 import 'klona';
-import 'defu';
+import 'ohash';
 import 'unstorage';
 import 'radix3';
 import 'node:fs';
@@ -288,4 +290,4 @@ _sfc_main.setup = (props, ctx) => {
 const error404 = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-30d2164e"]]);
 
 export { error404 as default };
-//# sourceMappingURL=error-404-9b36d474.mjs.map
+//# sourceMappingURL=error-404-1d7b63a1.mjs.map

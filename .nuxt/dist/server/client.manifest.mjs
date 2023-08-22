@@ -1,1 +1,1 @@
-export { default } from "file:///Users/jjsa/Documents/Code/Canner/node_modules/@nuxt/vite-builder/dist/runtime/client.manifest.mjs"
+export { default } from "file:///workspaces/canner-drafts/node_modules/@nuxt/vite-builder/dist/runtime/client.manifest.mjs"
