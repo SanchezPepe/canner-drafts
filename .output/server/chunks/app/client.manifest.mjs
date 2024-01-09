@@ -13,7 +13,7 @@ const client_manifest = {
     "resourceType": "script",
     "module": true,
     "css": [],
-    "file": "error-404.97bfb90a.js",
+    "file": "error-404.b8071bfc.js",
     "imports": [
       "node_modules/nuxt/dist/app/entry.js",
       "__plugin-vue_export-helper.c27b6911.js"
@@ -34,7 +34,7 @@ const client_manifest = {
     "resourceType": "script",
     "module": true,
     "css": [],
-    "file": "error-500.537af6ee.js",
+    "file": "error-500.a5aa4a42.js",
     "imports": [
       "node_modules/nuxt/dist/app/entry.js",
       "__plugin-vue_export-helper.c27b6911.js"
@@ -48,36 +48,36 @@ const client_manifest = {
   },
   "node_modules/nuxt/dist/app/entry.css": {
     "resourceType": "style",
-    "file": "entry.0b6305e7.css",
+    "file": "entry.66b1a5be.css",
     "src": "node_modules/nuxt/dist/app/entry.css"
   },
   "node_modules/nuxt/dist/app/entry.js": {
     "resourceType": "script",
     "module": true,
     "css": [
-      "entry.0b6305e7.css"
+      "entry.66b1a5be.css"
     ],
     "dynamicImports": [
       "virtual:nuxt:/workspaces/canner-drafts/.nuxt/error-component.mjs"
     ],
-    "file": "entry.37376cb2.js",
+    "file": "entry.1fa875ec.js",
     "isEntry": true,
     "src": "node_modules/nuxt/dist/app/entry.js"
   },
-  "entry.0b6305e7.css": {
-    "file": "entry.0b6305e7.css",
+  "entry.66b1a5be.css": {
+    "file": "entry.66b1a5be.css",
     "resourceType": "style"
   },
   "pages/[token].css": {
     "resourceType": "style",
-    "file": "_token_.8a6d0dce.css",
+    "file": "_token_.f8042add.css",
     "src": "pages/[token].css"
   },
   "pages/[token].vue": {
     "resourceType": "script",
     "module": true,
     "css": [],
-    "file": "_token_.de2435d1.js",
+    "file": "_token_.d978effc.js",
     "imports": [
       "node_modules/nuxt/dist/app/entry.js",
       "__plugin-vue_export-helper.c27b6911.js"
@@ -85,8 +85,8 @@ const client_manifest = {
     "isDynamicEntry": true,
     "src": "pages/[token].vue"
   },
-  "_token_.8a6d0dce.css": {
-    "file": "_token_.8a6d0dce.css",
+  "_token_.f8042add.css": {
+    "file": "_token_.f8042add.css",
     "resourceType": "style"
   },
   "virtual:nuxt:/workspaces/canner-drafts/.nuxt/error-component.mjs": {
@@ -96,7 +96,7 @@ const client_manifest = {
       "node_modules/@nuxt/ui-templates/dist/templates/error-404.vue",
       "node_modules/@nuxt/ui-templates/dist/templates/error-500.vue"
     ],
-    "file": "error-component.8c63888f.js",
+    "file": "error-component.c07ffc75.js",
     "imports": [
       "node_modules/nuxt/dist/app/entry.js"
     ],

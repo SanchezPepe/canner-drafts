@@ -1,10 +1,10 @@
 <template>
-  <div class="grid grid-cols-3 gap-2 min-h-screen bg-gray-900 p-2">
+  <div class="grid grid-cols-2 gap-2 min-h-screen bg-gray-900 p-2">
     <!-- Left panel -->
-    <div class="flex flex-col">
+    <div class="flex flex-col space-y-2">
       <!-- Logo and checkboxes -->
       <div
-        class="flex w-full mb-2 bg-gray-800 text-white text-2xl font-semibold whitespace-nowrap rounded-lg border-gray-500 border"
+        class="flex w-full bg-gray-800 text-white text-2xl font-semibold whitespace-nowrap rounded-lg border-gray-500 border"
       >
         <p class="flex-1 ml-2 w-1/4 self-center border-r border-gray-500">
           CR's Drafts
@@ -17,51 +17,53 @@
           Clear all
         </button>
       </div>
+
       <!-- Chat -->
-      <div
-        class="flex-1 h-full border border-gray-500 rounded-lg bg-gray-800 text-white p-4"
-      >
+      <div class="border border-gray-500 rounded-lg bg-gray-800 text-white p-4">
+        <!-- Header -->
         <div class="flex flex-row items-center space-x-2">
           <label for="header" class="flex grow font-bold text-xs text-gray-400">
             Chat: {{ chat.key }}
           </label>
+
+          <!-- Prompt -->
+          <div class="flex">
+            <!-- Radiogrup with label tell or ask a customer -->
+            <div
+              class="flex justify-end space-x-4 items-center w-full py-1 ml-1"
+            >
+              <!-- Tell a customer -->
+              <label
+                :key="option.value"
+                class="text-xs text-gray-400 flex flex-row items-center space-x-2"
+                v-for="option in chat.options"
+              >
+                <input
+                  class="h-3 w-3 text-blue-600 bg-gray-100 border-gray-300 rounded"
+                  type="radio"
+                  :value="option.value"
+                  :checked="chat.selectedRadio === option.value"
+                  @change="
+                    (value) => {
+                      console.log(value);
+                      chat.selectedRadio = value.target.value;
+                    }
+                  "
+                />
+                <p class="font-bold">
+                  {{ option.value }}
+                </p>
+              </label>
+            </div>
+          </div>
+
           <div v-if="loading" class="loading-spinner"></div>
         </div>
 
-        <hr class="my-2 border-gray-500" />
+        <!-- Options -->
 
-        <div class="flex">
-          <!-- Prompt -->
-          <label for="header" class="font-bold"> Prompt </label>
-          <!-- Radiogrup with label tell or ask a customer -->
-          <div class="flex justify-end space-x-4 items-center w-full py-1 ml-1">
-            <!-- Tell a customer -->
-            <label
-              :key="option.value"
-              class="text-xs text-gray-400 flex flex-row items-center space-x-2"
-              v-for="option in chat.options"
-            >
-              <input
-                class="h-3 w-3 text-blue-600 bg-gray-100 border-gray-300 rounded"
-                type="radio"
-                :value="option.value"
-                :checked="chat.selectedRadio === option.value"
-                @change="
-                  (value) => {
-                    console.log(value);
-                    chat.selectedRadio = value.target.value;
-                  }
-                "
-              />
-              <p class="font-bold">
-                {{ option.value }}
-              </p>
-            </label>
-          </div>
-        </div>
-
+        <!-- Prompt -->
         <div class="flex my-2">
-          <!-- Prompt -->
           <textarea
             class="w-full p-3 text-sm text-white border border-gray-500 rounded-lg bg-gray-900 focus:ring-blue-500 focus:border-blue-500"
             v-model="chat.input"
@@ -70,20 +72,15 @@
           />
         </div>
 
-        <!-- copy to clipboard button -->
-        <div class="grid grid-cols-3 gap-2 mt-2">
+        <!-- Buttons -->
+        <div class="grid grid-cols-2 gap-2 mt-2">
           <button
             @click="fetchGpt3Response"
             class="inline-flex items-center p-2 font-medium justify-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 hover:bg-blue-800"
           >
             Submit
           </button>
-          <button
-            @click="useChat"
-            class="inline-flex items-center p-2 font-medium justify-center text-white bg-green-800 rounded-lg focus:ring-4 focus:ring-red-200 hover:bg-green-800"
-          >
-            Use
-          </button>
+
           <button
             @click="clearChat"
             class="inline-flex items-center p-2 font-medium justify-center text-white bg-red-800 rounded-lg focus:ring-4 focus:ring-red-200 hover:bg-red-800"
@@ -101,19 +98,22 @@
             <li>{{ index }} - {{ value }}</li>
           </ul>
         </div> -->
+      </div>
 
-        <!-- Response -->
-        <div class="mt-2">
-          <label class="font-bold"> Response </label>
-          <p
-            class="mt-2 text-sm text-gray-400 border border-gray-500 p-2"
-            v-html="chat.response.message"
-          ></p>
-        </div>
+      <!-- Case notes -->
+      <div
+        class="border flex-1 h-full border-gray-500 rounded-lg bg-gray-800 text-white p-4"
+      >
+        <label class="font-bold"> {{ notes.label }} </label>
+        <textarea
+          v-model="notes.text"
+          :rows="notes.rows"
+          class="w-full h-[95%] p-4 rounded-xl my-2 text-sm text-white bg-gray-900 border-1 border-gray-500 focus:ring-0"
+        ></textarea>
       </div>
     </div>
 
-    <!-- Middle panel -->
+    <!-- Right panel -->
     <div
       class="border border-gray-500 rounded-lg bg-gray-800 text-white p-4 flex flex-col"
     >
@@ -141,21 +141,6 @@
         >
           Clear
         </button>
-      </div>
-    </div>
-
-    <!-- Right panel -->
-    <div class="flex flex-col">
-      <!-- Case notes -->
-      <div
-        class="border flex-1 h-full border-gray-500 rounded-lg bg-gray-800 text-white p-4"
-      >
-        <label class="font-bold"> {{ notes.label }} </label>
-        <textarea
-          v-model="notes.text"
-          :rows="notes.rows"
-          class="w-full h-[95%] p-4 rounded-xl my-2 text-sm text-white bg-gray-900 border-1 border-gray-500 focus:ring-0"
-        ></textarea>
       </div>
     </div>
   </div>
@@ -263,6 +248,7 @@ export default {
         })
         .finally(() => {
           state.loading = false;
+          useChat();
         });
     }
 

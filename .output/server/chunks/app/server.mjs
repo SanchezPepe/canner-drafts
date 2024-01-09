@@ -478,7 +478,7 @@ const _routes = [
     meta: {},
     alias: [],
     redirect: void 0,
-    component: () => import('./_nuxt/_token_-45242d0e.mjs').then((m) => m.default || m)
+    component: () => import('./_nuxt/_token_-e6422d37.mjs').then((m) => m.default || m)
   }
 ];
 const routerOptions0 = {
