@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "bundledDependencies": {
-    "@babel/parser": "7.22.4",
+    "@babel/parser": "7.23.6",
     "@unhead/dom": "1.1.27",
     "@unhead/shared": "1.1.27",
     "@unhead/ssr": "1.1.27",

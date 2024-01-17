@@ -19,61 +19,52 @@
       </div>
 
       <!-- Chat -->
-      <div class="border border-gray-500 rounded-lg bg-gray-800 text-white p-4">
+      <div
+        class="flex flex-col items-center space-y-2 border border-gray-500 rounded-lg bg-gray-800 text-white p-4"
+      >
         <!-- Header -->
-        <div class="flex flex-row items-center space-x-2">
-          <label for="header" class="flex grow font-bold text-xs text-gray-400">
-            Chat: {{ chat.key }}
-          </label>
+        <label class="font-bold text-xs text-gray-400">
+          Chat: {{ chat.key }}
+        </label>
 
-          <!-- Prompt -->
-          <div class="flex">
-            <!-- Radiogrup with label tell or ask a customer -->
-            <div
-              class="flex justify-end space-x-4 items-center w-full py-1 ml-1"
+        <!-- Options -->
+        <div class="flex justify-between w-full">
+          <div class="flex space-x-4">
+            <label
+              :key="option.value"
+              class="text-xs text-gray-400 flex flex-row items-center space-x-2"
+              v-for="option in chat.options"
             >
-              <!-- Tell a customer -->
-              <label
-                :key="option.value"
-                class="text-xs text-gray-400 flex flex-row items-center space-x-2"
-                v-for="option in chat.options"
-              >
-                <input
-                  class="h-3 w-3 text-blue-600 bg-gray-100 border-gray-300 rounded"
-                  type="radio"
-                  :value="option.value"
-                  :checked="chat.selectedRadio === option.value"
-                  @change="
-                    (value) => {
-                      console.log(value);
-                      chat.selectedRadio = value.target.value;
-                    }
-                  "
-                />
-                <p class="font-bold">
-                  {{ option.value }}
-                </p>
-              </label>
-            </div>
+              <input
+                class="h-3 w-3 text-blue-600 bg-gray-100 border-gray-300 rounded"
+                type="radio"
+                :value="option.value"
+                :checked="chat.selectedRadio === option.value"
+                @change="
+                  (value) => {
+                    console.log(value);
+                    chat.selectedRadio = value.target.value;
+                  }
+                "
+              />
+              <p class="font-bold">
+                {{ option.value }}
+              </p>
+            </label>
           </div>
-
           <div v-if="loading" class="loading-spinner"></div>
         </div>
 
-        <!-- Options -->
-
         <!-- Prompt -->
-        <div class="flex my-2">
-          <textarea
-            class="w-full p-3 text-sm text-white border border-gray-500 rounded-lg bg-gray-900 focus:ring-blue-500 focus:border-blue-500"
-            v-model="chat.input"
-            required
-            :rows="10"
-          />
-        </div>
+        <textarea
+          class="w-full p-3 text-sm text-white border border-gray-500 rounded-lg bg-gray-900 focus:ring-blue-500 focus:border-blue-500"
+          v-model="chat.input"
+          required
+          :rows="10"
+        />
 
         <!-- Buttons -->
-        <div class="grid grid-cols-2 gap-2 mt-2">
+        <div class="grid grid-cols-2 gap-2 w-full">
           <button
             @click="fetchGpt3Response"
             class="inline-flex items-center p-2 font-medium justify-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 hover:bg-blue-800"
@@ -329,8 +320,8 @@ export default {
   border: 4px solid #f3f3f3;
   border-top: 4px solid #3498db;
   border-radius: 50%;
-  width: 25px;
-  height: 25px;
+  width: 20px;
+  height: 20px;
   animation: spin 1s linear infinite;
 }
 

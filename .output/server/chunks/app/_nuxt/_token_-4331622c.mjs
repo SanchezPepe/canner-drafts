@@ -271,6 +271,7 @@ const _sfc_main = {
         alert(error.message);
       }).finally(() => {
         state.loading = false;
+        useChat();
       });
     }
     function clearDraft() {
@@ -336,21 +337,21 @@ ${this.drafter.references.text}`;
   }
 };
 function _sfc_ssrRender(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
-  _push(`<div${ssrRenderAttrs(mergeProps({ class: "grid grid-cols-3 gap-2 min-h-screen bg-gray-900 p-2" }, _attrs))} data-v-b572efb0><div class="flex flex-col" data-v-b572efb0><div class="flex w-full mb-2 bg-gray-800 text-white text-2xl font-semibold whitespace-nowrap rounded-lg border-gray-500 border" data-v-b572efb0><p class="flex-1 ml-2 w-1/4 self-center border-r border-gray-500" data-v-b572efb0> CR&#39;s Drafts </p><button class="flex-1 w-1/4 grow rounded-r-md text-sm text-white font-semibold bg-red-500" data-v-b572efb0> Clear all </button></div><div class="flex-1 h-full border border-gray-500 rounded-lg bg-gray-800 text-white p-4" data-v-b572efb0><div class="flex flex-row items-center space-x-2" data-v-b572efb0><label for="header" class="flex grow font-bold text-xs text-gray-400" data-v-b572efb0> Chat: ${ssrInterpolate(_ctx.chat.key)}</label>`);
+  _push(`<div${ssrRenderAttrs(mergeProps({ class: "grid grid-cols-2 gap-2 min-h-screen bg-gray-900 p-2" }, _attrs))} data-v-20be7371><div class="flex flex-col space-y-2" data-v-20be7371><div class="flex w-full bg-gray-800 text-white text-2xl font-semibold whitespace-nowrap rounded-lg border-gray-500 border" data-v-20be7371><p class="flex-1 ml-2 w-1/4 self-center border-r border-gray-500" data-v-20be7371> CR&#39;s Drafts </p><button class="flex-1 w-1/4 grow rounded-r-md text-sm text-white font-semibold bg-red-500" data-v-20be7371> Clear all </button></div><div class="border border-gray-500 rounded-lg bg-gray-800 text-white p-4" data-v-20be7371><div class="flex flex-row items-center space-x-2" data-v-20be7371><label for="header" class="flex grow font-bold text-xs text-gray-400" data-v-20be7371> Chat: ${ssrInterpolate(_ctx.chat.key)}</label><div class="flex" data-v-20be7371><div class="flex justify-end space-x-4 items-center w-full py-1 ml-1" data-v-20be7371><!--[-->`);
+  ssrRenderList(_ctx.chat.options, (option) => {
+    _push(`<label class="text-xs text-gray-400 flex flex-row items-center space-x-2" data-v-20be7371><input class="h-3 w-3 text-blue-600 bg-gray-100 border-gray-300 rounded" type="radio"${ssrRenderAttr("value", option.value)}${ssrIncludeBooleanAttr(_ctx.chat.selectedRadio === option.value) ? " checked" : ""} data-v-20be7371><p class="font-bold" data-v-20be7371>${ssrInterpolate(option.value)}</p></label>`);
+  });
+  _push(`<!--]--></div></div>`);
   if (_ctx.loading) {
-    _push(`<div class="loading-spinner" data-v-b572efb0></div>`);
+    _push(`<div class="loading-spinner" data-v-20be7371></div>`);
   } else {
     _push(`<!---->`);
   }
-  _push(`</div><hr class="my-2 border-gray-500" data-v-b572efb0><div class="flex" data-v-b572efb0><label for="header" class="font-bold" data-v-b572efb0> Prompt </label><div class="flex justify-end space-x-4 items-center w-full py-1 ml-1" data-v-b572efb0><!--[-->`);
-  ssrRenderList(_ctx.chat.options, (option) => {
-    _push(`<label class="text-xs text-gray-400 flex flex-row items-center space-x-2" data-v-b572efb0><input class="h-3 w-3 text-blue-600 bg-gray-100 border-gray-300 rounded" type="radio"${ssrRenderAttr("value", option.value)}${ssrIncludeBooleanAttr(_ctx.chat.selectedRadio === option.value) ? " checked" : ""} data-v-b572efb0><p class="font-bold" data-v-b572efb0>${ssrInterpolate(option.value)}</p></label>`);
-  });
-  _push(`<!--]--></div></div><div class="flex my-2" data-v-b572efb0><textarea class="w-full p-3 text-sm text-white border border-gray-500 rounded-lg bg-gray-900 focus:ring-blue-500 focus:border-blue-500" required${ssrRenderAttr("rows", 10)} data-v-b572efb0>${ssrInterpolate(_ctx.chat.input)}</textarea></div><div class="grid grid-cols-3 gap-2 mt-2" data-v-b572efb0><button class="inline-flex items-center p-2 font-medium justify-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 hover:bg-blue-800" data-v-b572efb0> Submit </button><button class="inline-flex items-center p-2 font-medium justify-center text-white bg-green-800 rounded-lg focus:ring-4 focus:ring-red-200 hover:bg-green-800" data-v-b572efb0> Use </button><button class="inline-flex items-center p-2 font-medium justify-center text-white bg-red-800 rounded-lg focus:ring-4 focus:ring-red-200 hover:bg-red-800" data-v-b572efb0> Clear </button></div><div class="mt-2" data-v-b572efb0><label class="font-bold" data-v-b572efb0> Response </label><p class="mt-2 text-sm text-gray-400 border border-gray-500 p-2" data-v-b572efb0>${_ctx.chat.response.message}</p></div></div></div><div class="border border-gray-500 rounded-lg bg-gray-800 text-white p-4 flex flex-col" data-v-b572efb0><!--[-->`);
+  _push(`</div><div class="flex my-2" data-v-20be7371><textarea class="w-full p-3 text-sm text-white border border-gray-500 rounded-lg bg-gray-900 focus:ring-blue-500 focus:border-blue-500" required${ssrRenderAttr("rows", 10)} data-v-20be7371>${ssrInterpolate(_ctx.chat.input)}</textarea></div><div class="grid grid-cols-2 gap-2 mt-2" data-v-20be7371><button class="inline-flex items-center p-2 font-medium justify-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 hover:bg-blue-800" data-v-20be7371> Submit </button><button class="inline-flex items-center p-2 font-medium justify-center text-white bg-red-800 rounded-lg focus:ring-4 focus:ring-red-200 hover:bg-red-800" data-v-20be7371> Clear </button></div></div><div class="border flex-1 h-full border-gray-500 rounded-lg bg-gray-800 text-white p-4" data-v-20be7371><label class="font-bold" data-v-20be7371>${ssrInterpolate(_ctx.notes.label)}</label><textarea${ssrRenderAttr("rows", _ctx.notes.rows)} class="w-full h-[95%] p-4 rounded-xl my-2 text-sm text-white bg-gray-900 border-1 border-gray-500 focus:ring-0" data-v-20be7371>${ssrInterpolate(_ctx.notes.text)}</textarea></div></div><div class="border border-gray-500 rounded-lg bg-gray-800 text-white p-4 flex flex-col" data-v-20be7371><!--[-->`);
   ssrRenderList(_ctx.drafter, (section) => {
-    _push(`<div data-v-b572efb0><label class="font-bold" data-v-b572efb0>${ssrInterpolate(section.label)}</label><textarea${ssrRenderAttr("rows", section.rows)} class="w-full p-4 rounded-xl my-2 text-sm text-white bg-gray-900 border-1 border-gray-500 focus:ring-0" data-v-b572efb0>${ssrInterpolate(section.text)}</textarea></div>`);
+    _push(`<div data-v-20be7371><label class="font-bold" data-v-20be7371>${ssrInterpolate(section.label)}</label><textarea${ssrRenderAttr("rows", section.rows)} class="w-full p-4 rounded-xl my-2 text-sm text-white bg-gray-900 border-1 border-gray-500 focus:ring-0" data-v-20be7371>${ssrInterpolate(section.text)}</textarea></div>`);
   });
-  _push(`<!--]--><div class="grid grid-cols-2 gap-2 mt-2" data-v-b572efb0><button class="inline-flex items-center p-2 font-medium justify-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 hover:bg-blue-800" data-v-b572efb0> Copy to clipboard </button><button class="inline-flex items-center p-2 font-medium justify-center text-white bg-red-800 rounded-lg focus:ring-4 focus:ring-red-200 hover:bg-red-800" data-v-b572efb0> Clear </button></div></div><div class="flex flex-col" data-v-b572efb0><div class="border flex-1 h-full border-gray-500 rounded-lg bg-gray-800 text-white p-4" data-v-b572efb0><label class="font-bold" data-v-b572efb0>${ssrInterpolate(_ctx.notes.label)}</label><textarea${ssrRenderAttr("rows", _ctx.notes.rows)} class="w-full h-[95%] p-4 rounded-xl my-2 text-sm text-white bg-gray-900 border-1 border-gray-500 focus:ring-0" data-v-b572efb0>${ssrInterpolate(_ctx.notes.text)}</textarea></div></div></div>`);
+  _push(`<!--]--><div class="grid grid-cols-2 gap-2 mt-2" data-v-20be7371><button class="inline-flex items-center p-2 font-medium justify-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 hover:bg-blue-800" data-v-20be7371> Copy to clipboard </button><button class="inline-flex items-center p-2 font-medium justify-center text-white bg-red-800 rounded-lg focus:ring-4 focus:ring-red-200 hover:bg-red-800" data-v-20be7371> Clear </button></div></div></div>`);
 }
 const _sfc_setup = _sfc_main.setup;
 _sfc_main.setup = (props, ctx) => {
@@ -358,7 +359,7 @@ _sfc_main.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("pages/[token].vue");
   return _sfc_setup ? _sfc_setup(props, ctx) : void 0;
 };
-const _token_ = /* @__PURE__ */ _export_sfc(_sfc_main, [["ssrRender", _sfc_ssrRender], ["__scopeId", "data-v-b572efb0"]]);
+const _token_ = /* @__PURE__ */ _export_sfc(_sfc_main, [["ssrRender", _sfc_ssrRender], ["__scopeId", "data-v-20be7371"]]);
 
 export { _token_ as default };
-//# sourceMappingURL=_token_-e6422d37.mjs.map
+//# sourceMappingURL=_token_-4331622c.mjs.map
