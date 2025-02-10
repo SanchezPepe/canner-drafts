@@ -31,9 +31,9 @@
         <div class="flex justify-between w-full">
           <div class="flex space-x-4">
             <label
-              :key="option.value"
               class="text-xs text-gray-400 flex flex-row items-center space-x-2"
               v-for="option in chat.options"
+              :key="option.value"
             >
               <input
                 class="h-3 w-3 text-blue-600 bg-gray-100 border-gray-300 rounded"
@@ -42,7 +42,6 @@
                 :checked="chat.selectedRadio === option.value"
                 @change="
                   (value) => {
-                    console.log(value);
                     chat.selectedRadio = value.target.value;
                   }
                 "
@@ -64,31 +63,14 @@
         />
 
         <!-- Buttons -->
-        <div class="grid grid-cols-2 gap-2 w-full">
+        <div class="grid w-full">
           <button
-            @click="fetchGpt3Response"
+            @click="fetchGeminiResponse"
             class="inline-flex items-center p-2 font-medium justify-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 hover:bg-blue-800"
           >
             Submit
           </button>
-
-          <button
-            @click="clearChat"
-            class="inline-flex items-center p-2 font-medium justify-center text-white bg-red-800 rounded-lg focus:ring-4 focus:ring-red-200 hover:bg-red-800"
-          >
-            Clear
-          </button>
         </div>
-
-        <!-- API usage -->
-        <!-- <div class="my-2 text-xs text-gray-400 border border-gray-500 p-2">
-          <p>API Usage:</p>
-          Query: {{ chat.query }}
-          <hr v-if="chat.query" class="my-1 border-gray-500" />
-          <ul v-for="(value, index) in chat.response.usage">
-            <li>{{ index }} - {{ value }}</li>
-          </ul>
-        </div> -->
       </div>
 
       <!-- Case notes -->
@@ -109,7 +91,7 @@
       class="border border-gray-500 rounded-lg bg-gray-800 text-white p-4 flex flex-col"
     >
       <!-- Drafter -->
-      <div v-for="section in drafter" :key="refresh">
+      <div v-for="section in drafter">
         <label class="font-bold"> {{ section.label }} </label>
         <textarea
           v-model="section.text"
@@ -143,11 +125,7 @@ export default {
     const route = useRoute();
 
     onMounted(() => {
-      if (route.params.token) {
-        state.chat.key = "sk-" + route.params.token;
-      } else {
-        state.chat.key = "sk-";
-      }
+      state.chat.key = route.params.token;
     });
 
     const state = reactive({
@@ -192,7 +170,7 @@ export default {
       },
     });
 
-    async function fetchGpt3Response() {
+    async function fetchGeminiResponse() {
       state.loading = true;
 
       switch (state.chat.selectedRadio) {
@@ -209,38 +187,43 @@ export default {
           break;
       }
 
-      await useFetch("https://api.openai.com/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${state.chat.key}`,
+      const model = "gemini-2.0-flash-001";
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${state.chat.key}`;
+      const request = {
+        contents: [
+          {
+            parts: [
+              {
+                text: state.chat.query,
+              },
+            ],
+          },
+        ],
+        generationConfig: {
+          temperature: 0.5,
+          maxOutputTokens: 800,
+          topP: 0.8,
+          topK: 10,
         },
-        body: {
-          model: "gpt-3.5-turbo",
-          messages: [{ role: "user", content: state.chat.query }],
-          max_tokens: 500,
-        },
-      })
-        .then((response) => {
-          console.log(response);
-          state.chat.response = response.data._rawValue;
-          // remove line breaks
+      };
 
-          // replace line breaks with <br />
-          state.chat.response.message =
-            state.chat.response.choices[0].message.content.replace(
-              /\n/g,
-              "<br />"
-            );
-        })
-        .catch((error) => {
-          console.error(error);
-          alert(error.message);
-        })
-        .finally(() => {
-          state.loading = false;
-          useChat();
+      try {
+        const response = await fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(request),
         });
+
+        const data = await response.json();
+        state.chat.response.message = data.candidates[0].content.parts[0].text;
+      } catch (error) {
+        console.error(error);
+      } finally {
+        state.loading = false;
+        useChat();
+      }
     }
 
     function clearDraft() {
@@ -308,7 +291,7 @@ export default {
       clearDraft,
       clearChat,
       clearAll,
-      fetchGpt3Response,
+      fetchGeminiResponse,
       useChat,
     };
   },
