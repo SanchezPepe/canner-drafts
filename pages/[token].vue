@@ -56,6 +56,7 @@
 
         <!-- Prompt -->
         <textarea
+          @keypress.enter="fetchGeminiResponse"
           class="w-full p-3 text-sm text-white border border-gray-500 rounded-lg bg-gray-900 focus:ring-blue-500 focus:border-blue-500"
           v-model="chat.input"
           required
@@ -173,12 +174,22 @@ export default {
     async function fetchGeminiResponse() {
       state.loading = true;
 
+      const instructions = [
+        "You are a Cloud Support Agent. Draft an email to tell a customer that ",
+        ". Review grammar and spelling and make sure the message is clear and concise, feel free to add more details if needed.",
+      ];
+
       switch (state.chat.selectedRadio) {
         case "TELLC":
-          state.chat.query = "Tell a customer that " + state.chat.input;
+          state.chat.query =
+            instructions[0] + state.chat.input + instructions[1];
           break;
         case "ASKC":
-          state.chat.query = "Ask a customer " + state.chat.input;
+          state.chat.query =
+            instructions[0] +
+            state.chat.input +
+            " and ask for some information if missing and it's required to investigate further" +
+            instructions[1];
           break;
         case "EMPTY":
           state.chat.query = state.chat.input;
@@ -187,7 +198,7 @@ export default {
           break;
       }
 
-      const model = "gemini-2.0-flash-001";
+      const model = "gemini-2.0-flash";
       const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${state.chat.key}`;
       const request = {
         contents: [
